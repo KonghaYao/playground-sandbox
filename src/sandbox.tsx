@@ -5,7 +5,7 @@ import {
 
 import { Component, createResource, createSignal, For } from "solid-js";
 import { IframeFactory } from "./LoadFile";
-
+import "./index.css";
 /* 用于承载 Iframe */
 const Shower: Component<{
     port?: MessagePort;
@@ -27,16 +27,18 @@ const FileSystem: Component<{
     };
     return (
         <div>
-            <div>{path}</div>
-            <ul>
-                <For each={fileList()}>
-                    {(item) => <li onclick={() => enter(item)}>{item}</li>}
-                </For>
-            </ul>
+            <div class="file-system">
+                <header>{path}</header>
+                <ul>
+                    <For each={fileList()}>
+                        {(item) => <li onclick={() => enter(item)}>{item}</li>}
+                    </For>
+                </ul>
+            </div>
         </div>
     );
 };
-
+import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.77/dist/components/split-panel/split-panel.js";
 export const Sandbox: Component<{
     storeTag?: string;
 }> = (props = {}) => {
@@ -50,9 +52,14 @@ export const Sandbox: Component<{
     /* 用于创建 Iframe 对象 */
     const createIframe = IframeFactory(loadFile);
     return (
-        <div>
-            <FileSystem fs={fs}></FileSystem>
-            <Shower port={port} ready={createIframe}></Shower>
-        </div>
+        <sl-split-panel class="forsee-sandbox">
+            <div slot="start">
+                {" "}
+                <FileSystem fs={fs}></FileSystem>
+            </div>
+            <div slot="end">
+                <Shower port={port} ready={createIframe}></Shower>
+            </div>
+        </sl-split-panel>
     );
 };
