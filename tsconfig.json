@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "lib": ["es2017", "dom", "dom.iterable"],
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "outDir": "./types",
+        "strict": true,
+        "jsx": "preserve",
+        "jsxImportSource": "solid-js",
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "isolatedModules": true,
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "useDefineForClassFields": false,
+        "skipLibCheck": true
+    },
+    "include": ["src/**/*.ts", "src/worker.js", "src/sandbox.tsx"],
+    "references": [{ "path": "./tsconfig.node.json" }]
+}
