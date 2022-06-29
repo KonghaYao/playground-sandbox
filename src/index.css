@@ -1,5 +1,24 @@
+@import url("https://cdn.jsdelivr.net/npm/@fontsource/material-icons/index.css");
+.forsee-sandbox {
+    @apply h-full  w-full bg-gray-800 text-white;
+}
 .file-system {
 }
-.forsee-sandbox {
-    @apply h-full  w-full;
+
+/* 预览窗口 */
+.previewer {
+    @apply h-full w-full flex flex-col overflow-hidden;
+}
+
+.previewer main {
+    @apply flex-grow bg-white;
+}
+.previewer header {
+    @apply h-8 w-full flex items-center bg-gray-700;
+}
+.previewer header .material-icons {
+    @apply m-1 bg-gray-600 cursor-pointer;
+}
+.previewer header input {
+    @apply w-full m-2;
 }

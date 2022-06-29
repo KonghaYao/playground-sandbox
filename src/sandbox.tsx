@@ -2,18 +2,27 @@ import {
     FS,
     /* @ts-ignore  */
 } from "../rollup-web/dist/adapter/Fetcher/FSFetcher.js";
-
+import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.77/dist/components/split-panel/split-panel.js";
 import { Component, createResource, createSignal, For } from "solid-js";
 import { IframeFactory } from "./LoadFile";
 import "./index.css";
 /* 用于承载 Iframe */
 const Shower: Component<{
     port?: MessagePort;
-    ready: (el: HTMLDivElement) => void;
+    ready: (el: HTMLElement) => void;
 }> = (props) => {
-    return <div ref={(el) => props.ready(el)}></div>;
+    return (
+        <div class="previewer">
+            <header>
+                <div class="material-icons">replay</div>
+                <input type="text"></input>
+            </header>
+            <main ref={(el) => props.ready(el)}></main>
+        </div>
+    );
 };
 export { FS };
+
 const FileSystem: Component<{
     fs: FS;
 }> = (props) => {
@@ -27,18 +36,19 @@ const FileSystem: Component<{
     };
     return (
         <div>
-            <div class="file-system">
+            <nav class="file-explorer">
                 <header>{path}</header>
                 <ul>
                     <For each={fileList()}>
                         {(item) => <li onclick={() => enter(item)}>{item}</li>}
                     </For>
                 </ul>
-            </div>
+            </nav>
+            <nav class="file-editor"></nav>
         </div>
     );
 };
-import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.77/dist/components/split-panel/split-panel.js";
+
 export const Sandbox: Component<{
     storeTag?: string;
 }> = (props = {}) => {
@@ -54,7 +64,6 @@ export const Sandbox: Component<{
     return (
         <sl-split-panel class="forsee-sandbox">
             <div slot="start">
-                {" "}
                 <FileSystem fs={fs}></FileSystem>
             </div>
             <div slot="end">
