@@ -4,10 +4,14 @@ import postcss from "rollup-plugin-postcss";
 
 // rollup.config.js
 export default {
+    external: ["vscode-icons-js"],
     input: "./test/index.ts",
     output: {
         file: "./dist/test.js",
         format: "es",
+        paths: {
+            "vscode-icons-js": "https://esm.run/vscode-icons-js",
+        },
     },
     plugins: [
         postcss(),

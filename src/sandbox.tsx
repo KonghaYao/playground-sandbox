@@ -1,10 +1,10 @@
+import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.77/dist/components/split-panel/split-panel.js";
 import {
     FS,
     /* @ts-ignore  */
 } from "../rollup-web/dist/adapter/Fetcher/FSFetcher.js";
-import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.77/dist/components/split-panel/split-panel.js";
-import { Component, createResource, createSignal, For } from "solid-js";
-import { IframeFactory } from "./LoadFile";
+import { Component, createSignal, For } from "solid-js";
+import { IframeFactory } from "./IframeFactory";
 import "./index.css";
 /* 用于承载 Iframe */
 const Shower: Component<{
@@ -23,26 +23,53 @@ const Shower: Component<{
 };
 export { FS };
 
+import { getIconForFile } from "vscode-icons-js";
 const FileSystem: Component<{
     fs: FS;
 }> = (props) => {
     const [path, setPath] = createSignal("/");
-    const [fileList, { refetch: reLoadFileList }] = createResource(() => {
-        return props.fs.promises.readdir(path()) as string[];
-    });
-    const enter = (item: string) => {
-        setPath(`${path()}${item}/`);
-        reLoadFileList();
+    const [fileList, setFileList] = createSignal([] as string[]);
+    const getFileList = (path: string) => {
+        return props.fs.promises.readdir(path, {
+            withFileTypes: true,
+        }) as Promise<string[]>;
     };
+    const jumpTo = (newPath: string) => {
+        getFileList(newPath).then((res) => {
+            setFileList(res);
+            setPath(newPath);
+        });
+    };
+    const enter = (item: string) => {
+        const newPath = `${path()}${item}/`;
+        return jumpTo(newPath);
+    };
+
+    jumpTo("/");
     return (
         <div>
             <nav class="file-explorer">
-                <header>{path}</header>
-                <ul>
+                <header>
+                    <input type="text" value={path()} />
+                </header>
+                <div class="file-list">
                     <For each={fileList()}>
-                        {(item) => <li onclick={() => enter(item)}>{item}</li>}
+                        {(item) => {
+                            const src =
+                                "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
+                                getIconForFile(item);
+                            return (
+                                <span
+                                    onclick={() => enter(item)}
+                                    class="single-tab"
+                                >
+                                    <img src={src} alt="" />
+                                    {item}
+                                </span>
+                            );
+                        }}
                     </For>
-                </ul>
+                </div>
             </nav>
             <nav class="file-editor"></nav>
         </div>

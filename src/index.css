@@ -2,9 +2,18 @@
 .forsee-sandbox {
     @apply h-full  w-full bg-gray-800 text-white;
 }
-.file-system {
+.file-explorer header input {
+    @apply w-full m-2;
 }
-
+.file-explorer .file-list {
+    @apply flex flex-col overflow-auto;
+}
+.file-list .single-tab {
+    @apply flex items-center w-full cursor-pointer;
+}
+.file-list .single-tab img {
+    @apply w-6 h-6 mx-2;
+}
 /* 预览窗口 */
 .previewer {
     @apply h-full w-full flex flex-col overflow-hidden;
