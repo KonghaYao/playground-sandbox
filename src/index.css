@@ -2,6 +2,14 @@
 .forsee-sandbox {
     @apply h-full  w-full bg-gray-800 text-white;
 }
+
+/* 文件浏览器 */
+.file-explorer header {
+    @apply flex items-center;
+}
+.file-explorer .material-icons {
+    @apply bg-gray-600 mx-2 cursor-pointer;
+}
 .file-explorer header input {
     @apply w-full m-2;
 }

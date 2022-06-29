@@ -29,20 +29,32 @@ const FileSystem: Component<{
 }> = (props) => {
     const [path, setPath] = createSignal("/");
     const [fileList, setFileList] = createSignal([] as string[]);
-    const getFileList = (path: string) => {
+    const getFileList = async (path: string) => {
         return props.fs.promises.readdir(path, {
             withFileTypes: true,
         }) as Promise<string[]>;
     };
-    const jumpTo = (newPath: string) => {
-        getFileList(newPath).then((res) => {
-            setFileList(res);
-            setPath(newPath);
-        });
+    const jumpTo = async (newPath: string) => {
+        const stats = await props.fs.promises.stat(newPath);
+        if (stats.isFile()) {
+            console.log("this is a file");
+        } else {
+            getFileList(newPath).then((res) => {
+                setFileList(res);
+                setPath(newPath);
+            });
+        }
     };
     const enter = (item: string) => {
         const newPath = `${path()}${item}/`;
         return jumpTo(newPath);
+    };
+    const back = () => {
+        const newPath = path().replace(/[^\/]+\/$/, "");
+        if (newPath !== path()) {
+            return jumpTo(newPath);
+        }
+        return;
     };
 
     jumpTo("/");
@@ -50,6 +62,9 @@ const FileSystem: Component<{
         <div>
             <nav class="file-explorer">
                 <header>
+                    <div class="material-icons" onclick={back}>
+                        keyboard_arrow_left
+                    </div>
                     <input type="text" value={path()} />
                 </header>
                 <div class="file-list">
