@@ -20,6 +20,5 @@
         "useDefineForClassFields": false,
         "skipLibCheck": true
     },
-    "include": ["src/**/*.ts", "src/worker.js", "src/sandbox.tsx"],
-    "references": [{ "path": "./tsconfig.node.json" }]
+    "include": ["src/**/*.ts", "src/worker.js", "src/sandbox.tsx"]
 }

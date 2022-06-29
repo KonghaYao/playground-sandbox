@@ -3,14 +3,7 @@ import {
     /* @ts-ignore  */
 } from "../rollup-web/dist/adapter/Fetcher/FSFetcher.js";
 
-import {
-    Component,
-    createEffect,
-    createMemo,
-    createResource,
-    createSignal,
-    For,
-} from "solid-js";
+import { Component, createResource, createSignal, For } from "solid-js";
 import { IframeFactory } from "./LoadFile";
 
 /* 用于承载 Iframe */
