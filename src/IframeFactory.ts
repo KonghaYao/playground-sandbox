@@ -1,8 +1,4 @@
-/* @ts-ignore */
-import { IframeEnv } from "../rollup-web/dist/Iframe.js";
-/* @ts-ignore */
-import { Evaluator } from "../rollup-web/dist/index.js";
-
+import { Evaluator, IframeEnv } from "./Helper";
 type LoadFile = (string: string) => Promise<string>;
 async function createCompilerPort(loadFile: LoadFile): Promise<MessagePort> {
     const code = await loadFile("/rollup.config.web.js");
