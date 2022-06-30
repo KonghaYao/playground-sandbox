@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@babel/core': ^7.18.6
   '@babel/preset-typescript': ^7.18.6
+  '@isomorphic-git/lightning-fs': ^4.6.0
   '@rollup/plugin-babel': ^5.3.1
   '@rollup/plugin-node-resolve': ^13.3.0
   autoprefixer: ^10.4.7
@@ -16,6 +17,7 @@ specifiers:
   vscode-icons-js: ^11.6.1
 
 dependencies:
+  '@isomorphic-git/lightning-fs': 4.6.0
   '@rollup/plugin-babel': 5.3.1_fb3qe53zzddvqjqqltveoanfhe
   solid-js: 1.4.5
   vscode-icons-js: 11.6.1
@@ -345,6 +347,20 @@ packages:
       '@babel/helper-validator-identifier': 7.18.6
       to-fast-properties: 2.0.0
     dev: true
+
+  /@isomorphic-git/idb-keyval/3.3.2:
+    resolution: {integrity: sha512-r8/AdpiS0/WJCNR/t/gsgL+M8NMVj/ek7s60uz3LmpCaTF2mEVlZJlB01ZzalgYzRLXwSPC92o+pdzjM7PN/pA==}
+    dev: false
+
+  /@isomorphic-git/lightning-fs/4.6.0:
+    resolution: {integrity: sha512-tfon8f1h6LawjFI/d8lZPWRPTxmdvyTMbkT/j5yo6dB0hALhKw5D9JsdCcUu/D1pAcMMiU7GZFDsDGqylerr7g==}
+    hasBin: true
+    dependencies:
+      '@isomorphic-git/idb-keyval': 3.3.2
+      isomorphic-textencoder: 1.0.1
+      just-debounce-it: 1.1.0
+      just-once: 1.1.0
+    dev: false
 
   /@jridgewell/gen-mapping/0.1.1:
     resolution: {integrity: sha512-sQXCasFk+U8lWYEe66WxRDOE9PjVz4vSM51fTu3Hw+ClTpUSQb718772vH3pyS5pShp6lvQM7SxgIDXXXmOX7w==}
@@ -884,6 +900,10 @@ packages:
       micromatch: 4.0.5
     dev: true
 
+  /fast-text-encoding/1.0.4:
+    resolution: {integrity: sha512-x6lDDm/tBAzX9kmsPcZsNbvDs3Zey3+scsxaZElS8xWLgUMAg/oFLeewfUz0mu1CblHhhsu15jGkraldkFh8KQ==}
+    dev: false
+
   /fastq/1.13.0:
     resolution: {integrity: sha512-YpkpUnK8od0o1hmeSc7UUs/eB/vIPWJYjKck2QKIzAf71Vm1AAQ3EbuZB3g2JIy+pg+ERD0vqI79KyZiB2e2Nw==}
     dependencies:
@@ -1032,6 +1052,12 @@ packages:
     engines: {node: '>=0.12.0'}
     dev: true
 
+  /isomorphic-textencoder/1.0.1:
+    resolution: {integrity: sha512-676hESgHullDdHDsj469hr+7t3i/neBKU9J7q1T4RHaWwLAsaQnywC0D1dIUId0YZ+JtVrShzuBk1soo0+GVcQ==}
+    dependencies:
+      fast-text-encoding: 1.0.4
+    dev: false
+
   /js-tokens/4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
     dev: true
@@ -1047,6 +1073,14 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
     dev: true
+
+  /just-debounce-it/1.1.0:
+    resolution: {integrity: sha512-87Nnc0qZKgBZuhFZjYVjSraic0x7zwjhaTMrCKlj0QYKH6lh0KbFzVnfu6LHan03NO7J8ygjeBeD0epejn5Zcg==}
+    dev: false
+
+  /just-once/1.1.0:
+    resolution: {integrity: sha512-+rZVpl+6VyTilK7vB/svlMPil4pxqIJZkbnN7DKZTOzyXfun6ZiFeq2Pk4EtCEHZ0VU4EkdFzG8ZK5F3PErcDw==}
+    dev: false
 
   /lilconfig/2.0.5:
     resolution: {integrity: sha512-xaYmXZtTHPAw5m+xLN8ab9C+3a8YmV3asNSPOATITbtwrfbwaLJj8h66H1WMIpALCkqsIzK3h7oQ+PdX+LQ9Eg==}

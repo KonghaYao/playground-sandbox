@@ -1,19 +1,96 @@
-import { FS } from "./Helper";
-import { Component, createSignal, For } from "solid-js";
-import { getIconForFile } from "vscode-icons-js";
+import { Accessor, Component, createSignal, For, Setter } from "solid-js";
+import { getIconForFile, getIconForFolder } from "vscode-icons-js";
+import type FS from "@isomorphic-git/lightning-fs";
 
-export const FileExplorer: Component<{ fs: FS }> = (props) => {
-    const [path, setPath] = createSignal("/");
-    const [fileList, setFileList] = createSignal([] as string[]);
+type Props = {
+    fs: FS;
+    openFile: (path: string) => void;
+    initPath?: string;
+};
+
+/* 文件浏览器 */
+export const FileExplorer: Component<Props> = (props) => {
+    const initPath = props.initPath || "/";
+    const [path, setPath] = createSignal(initPath);
+    const [fileList, setFileList] = createSignal(
+        [] as (FS.Stats & { name: string })[]
+    );
+
+    const { jumpTo, back, enter } = createControl(
+        props,
+        setFileList,
+        setPath,
+        path
+    );
+    jumpTo(initPath);
+    return (
+        <nav class="file-explorer">
+            <header>
+                <div class="material-icons" onclick={back}>
+                    keyboard_arrow_left
+                </div>
+                <input type="text" value={path()} />
+            </header>
+            <div class="file-list bg-white">
+                <For each={fileList()}>
+                    {(item) => {
+                        const name = item.name;
+                        return (
+                            <FileTab
+                                name={name}
+                                isFile={item.isFile()}
+                                onclick={() => enter(name)}
+                            ></FileTab>
+                        );
+                    }}
+                </For>
+            </div>
+        </nav>
+    );
+};
+/* 单个的文件的选项卡 */
+export const FileTab: Component<{
+    name: string;
+    isFile: boolean;
+    onclick: Function;
+}> = (props) => {
+    const src =
+        "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
+        (props.isFile
+            ? getIconForFile(props.name)
+            : getIconForFolder(props.name));
+    return (
+        <span class="single-tab" onclick={props.onclick as any}>
+            <img src={src} alt="" />
+            {props.name}
+        </span>
+    );
+};
+
+/* 创建文件浏览器的控制器 */
+function createControl(
+    props: Props,
+    setFileList: Setter<(FS.Stats & { name: string })[]>,
+    setPath: Setter<string>,
+    path: Accessor<string>
+) {
+    /* 获取文件列表，其中的元素为 Stats 并扩充 name 属性 */
     const getFileList = async (path: string) => {
-        return props.fs.promises.readdir(path, {
-            withFileTypes: true,
-        }) as Promise<string[]>;
+        const list: string[] = await props.fs.promises.readdir(path);
+        return Promise.all(
+            list.map((name) =>
+                props.fs.promises.stat(path + "/" + name).then((res) => {
+                    return Object.assign(res, { name }) as FS.Stats & {
+                        name: string;
+                    };
+                })
+            )
+        );
     };
     const jumpTo = async (newPath: string) => {
         const stats = await props.fs.promises.stat(newPath);
         if (stats.isFile()) {
-            console.log("this is a file");
+            props.openFile(newPath);
         } else {
             getFileList(newPath).then((res) => {
                 setFileList(res);
@@ -21,8 +98,8 @@ export const FileExplorer: Component<{ fs: FS }> = (props) => {
             });
         }
     };
-    const enter = (item: string) => {
-        const newPath = `${path()}${item}/`;
+    const enter = (subPath: string) => {
+        const newPath = `${path()}${subPath}/`;
         return jumpTo(newPath);
     };
     const back = () => {
@@ -32,34 +109,5 @@ export const FileExplorer: Component<{ fs: FS }> = (props) => {
         }
         return;
     };
-
-    jumpTo("/");
-    return (
-        <nav class="file-explorer">
-            <header>
-                <div class="material-icons" onclick={back}>
-                    keyboard_arrow_left
-                </div>
-                <input type="text" value={path()} />
-            </header>
-            <div class="file-list">
-                <For each={fileList()}>
-                    {(item) => {
-                        const src =
-                            "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
-                            getIconForFile(item);
-                        return (
-                            <span
-                                onclick={() => enter(item)}
-                                class="single-tab"
-                            >
-                                <img src={src} alt="" />
-                                {item}
-                            </span>
-                        );
-                    }}
-                </For>
-            </div>
-        </nav>
-    );
-};
+    return { jumpTo, back, enter };
+}

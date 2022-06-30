@@ -4,6 +4,9 @@
 }
 
 /* 文件浏览器 */
+.file-explorer {
+    @apply select-none;
+}
 .file-explorer header {
     @apply flex items-center;
 }

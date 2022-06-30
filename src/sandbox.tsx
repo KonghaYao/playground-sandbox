@@ -1,10 +1,12 @@
 import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.77/dist/components/split-panel/split-panel.js";
 import { FS } from "./Helper";
+export { FS };
 import { Component } from "solid-js";
 import { IframeFactory } from "./IframeFactory";
 import "./index.css";
+
 /* 用于承载 Iframe */
-const Shower: Component<{
+const Previewer: Component<{
     port?: MessagePort;
     ready: (el: HTMLElement) => void;
 }> = (props) => {
@@ -18,20 +20,8 @@ const Shower: Component<{
         </div>
     );
 };
-export { FS };
 
 import { FileExplorer } from "./FileExplorer";
-const FileSystem: Component<{
-    fs: FS;
-}> = (props) => {
-    return (
-        <div>
-            <FileExplorer fs={props.fs}></FileExplorer>
-            <nav class="file-editor"></nav>
-        </div>
-    );
-};
-
 export const Sandbox: Component<{
     storeTag?: string;
 }> = (props = {}) => {
@@ -39,7 +29,7 @@ export const Sandbox: Component<{
     let port: MessagePort | undefined = undefined;
     /* 加载文件的方式 */
     const loadFile = async (url: string) => {
-        return fs.promises.readFile(url, "utf8");
+        return fs.promises.readFile(url, "utf8") as Promise<string>;
     };
 
     /* 用于创建 Iframe 对象 */
@@ -47,10 +37,11 @@ export const Sandbox: Component<{
     return (
         <sl-split-panel class="forsee-sandbox">
             <div slot="start">
-                <FileSystem fs={fs}></FileSystem>
+                <FileExplorer fs={fs} openFile={(path) => {}}></FileExplorer>
+                <nav class="file-editor"></nav>
             </div>
             <div slot="end">
-                <Shower port={port} ready={createIframe}></Shower>
+                <Previewer port={port} ready={createIframe}></Previewer>
             </div>
         </sl-split-panel>
     );
