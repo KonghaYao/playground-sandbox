@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+
 import Solid from "solid-js";
 declare module "solid-js" {
     export namespace JSX {

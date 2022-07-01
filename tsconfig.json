@@ -6,6 +6,7 @@
         "emitDeclarationOnly": true,
         "outDir": "./types",
         "strict": true,
+        "resolveJsonModule": true,
         "jsx": "preserve",
         "jsxImportSource": "solid-js",
         "noUnusedLocals": true,
@@ -20,5 +21,10 @@
         "useDefineForClassFields": false,
         "skipLibCheck": true
     },
-    "include": ["src/**/*.ts", "src/worker.js", "src/sandbox.tsx"]
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "src/worker.js",
+        "src/sandbox.tsx"
+    ]
 }
