@@ -45,7 +45,7 @@ export const Sandbox: Component<{
                     }}
                 ></FileExplorer>
                 <FileEditor
-                    fileList={["/index.html"]}
+                    fileList={["/index.html", "/rollup.config.web.js"]}
                     getFile={async (path) => {
                         const code = (await fs.promises.readFile(
                             path,

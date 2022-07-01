@@ -1,4 +1,4 @@
-import { Component, lazy, onMount, Suspense } from "solid-js";
+import { Component, createSignal, lazy, onMount, Suspense } from "solid-js";
 import { For } from "solid-js/web";
 import { getIconForFile, getIconForFolder } from "vscode-icons-js";
 import type FS from "@isomorphic-git/lightning-fs";
@@ -24,6 +24,7 @@ class FileModel {
 class FileManager {
     fileStore = new Map<string, FileModel>();
     monacoEditor!: ReturnType<typeof monaco["editor"]["create"]>;
+
     mount(container: HTMLElement) {
         this.monacoEditor = monaco.editor.create(container, {
             model: null,
@@ -58,9 +59,14 @@ class FileManager {
         file ? this.monacoEditor.setModel(file.model) : null;
     }
     closeFile(path: string) {
-        this.fileStore.get(path)?.destroy();
-        this.fileStore.delete(path);
+        const old = this.fileStore.get(path);
+        if (old) {
+            old.destroy();
+            this.fileStore.delete(path);
+            this.openFirst();
+        }
     }
+    /* 打开垫底的文件 */
     openFirst() {
         if (this.fileStore.size) {
             const [[path]] = this.fileStore;
@@ -72,6 +78,7 @@ import "./Monaco/index.css";
 /* 文件浏览器 */
 const FileEditorInstance: (controller: FileManager) => Component<Props> =
     (controller) => (props) => {
+        const [fileList] = createSignal(props.fileList);
         onMount(() => {
             // fileList 是初始化参数，并非响应式
             const promises = props.fileList.map(async (path) => {
@@ -85,11 +92,16 @@ const FileEditorInstance: (controller: FileManager) => Component<Props> =
         return (
             <nav class="file-editor">
                 <div class="file-tabs">
-                    <For each={props.fileList}>
+                    <For each={fileList()}>
                         {(i) => {
+                            const tabName = i.replace(/^.*?([^\/]+)$/, "$1");
                             return (
                                 <div class="file-tab">
-                                    <span>{i}</span>
+                                    <span
+                                        onclick={() => controller.openFile(i)}
+                                    >
+                                        {tabName}
+                                    </span>
                                     <span
                                         class="material-icons"
                                         onclick={() => {
