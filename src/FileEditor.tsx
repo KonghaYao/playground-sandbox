@@ -35,6 +35,7 @@ class FileManager {
         });
         applyTheme("github-gist");
     }
+    /* 提前准备文件，但是不进行展示 */
     prepareFile(path: string, code = "", language = "javascript") {
         if (!this.fileStore.has(path)) {
             const model = new FileModel();
@@ -56,6 +57,7 @@ class FileManager {
     /* 打开存在的一个文件 */
     openExistFile(path: string) {
         const file = this.fileStore.get(path);
+        console.log(file);
         file ? this.monacoEditor.setModel(file.model) : null;
     }
     closeFile(path: string) {

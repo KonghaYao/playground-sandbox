@@ -41,6 +41,7 @@ export const Sandbox: Component<{
                 <FileExplorer
                     fs={fs}
                     openFile={(path) => {
+                        console.log(path);
                         controller.openFile(path);
                     }}
                 ></FileExplorer>

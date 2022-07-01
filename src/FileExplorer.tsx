@@ -39,7 +39,7 @@ export const FileExplorer: Component<Props> = (props) => {
                             <FileTab
                                 name={name}
                                 isFile={item.isFile()}
-                                onclick={() => enter(name)}
+                                onclick={() => enter(name, item.isFile())}
                             ></FileTab>
                         );
                     }}
@@ -87,18 +87,19 @@ function createControl(
             )
         );
     };
+    // 必定是文件夹
     const jumpTo = async (newPath: string) => {
-        const stats = await props.fs.promises.stat(newPath);
-        if (stats.isFile()) {
-            props.openFile(newPath);
-        } else {
-            getFileList(newPath).then((res) => {
-                setFileList(res);
-                setPath(newPath);
-            });
-        }
+        getFileList(newPath).then((res) => {
+            setFileList(res);
+            setPath(newPath);
+        });
     };
-    const enter = (subPath: string) => {
+    const enter = (subPath: string, isFile: boolean) => {
+        if (isFile) {
+            const newPath = `${path()}${subPath}`;
+            props.openFile(newPath);
+            return;
+        }
         const newPath = `${path()}${subPath}/`;
         return jumpTo(newPath);
     };
