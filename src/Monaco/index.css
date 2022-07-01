@@ -4,3 +4,9 @@
 .file-tab {
     @apply flex justify-between;
 }
+.file-editor {
+    @apply w-full h-full flex-grow overflow-hidden flex flex-col;
+}
+.file-editor .editor {
+    @apply w-full h-full flex-grow;
+}

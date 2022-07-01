@@ -7,7 +7,6 @@ import { getMonaco } from "./Monaco/getMonaco";
 
 type Props = {
     fileList: string[];
-
     getFile(path: string): Promise<{ code: string; language?: string }>;
 };
 
@@ -28,6 +27,11 @@ class FileManager {
     mount(container: HTMLElement) {
         this.monacoEditor = monaco.editor.create(container, {
             model: null,
+
+            autoIndent: "advanced",
+            automaticLayout: true,
+            fontFamily: "Consolas",
+            fontSize: 16,
         });
     }
     prepareFile(path: string, code = "", language = "javascript") {
@@ -64,7 +68,7 @@ class FileManager {
         }
     }
 }
-import "./index.css";
+import "./Monaco/index.css";
 /* 文件浏览器 */
 const FileEditorInstance: (controller: FileManager) => Component<Props> =
     (controller) => (props) => {
@@ -92,18 +96,17 @@ const FileEditorInstance: (controller: FileManager) => Component<Props> =
                                             controller.closeFile(i);
                                         }}
                                     >
-                                        x
+                                        close
                                     </span>
                                 </div>
                             );
                         }}
                     </For>
                 </div>
-                <div>
-                    <div
-                        ref={(el: HTMLDivElement) => controller.mount(el)}
-                    ></div>
-                </div>
+                <div
+                    class="editor"
+                    ref={(el: HTMLDivElement) => controller.mount(el)}
+                ></div>
             </nav>
         );
     };
@@ -122,5 +125,5 @@ export const createFileEditor = () => {
             ></Suspense>
         );
     };
-    return [FileEditor, controller];
+    return [FileEditor, controller] as const;
 };

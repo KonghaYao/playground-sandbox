@@ -2,10 +2,12 @@
 .forsee-sandbox {
     @apply h-full  w-full bg-gray-800 text-white;
 }
-
+.file-box {
+    @apply flex h-full;
+}
 /* 文件浏览器 */
 .file-explorer {
-    @apply select-none;
+    @apply select-none h-full;
 }
 .file-explorer header {
     @apply flex items-center;

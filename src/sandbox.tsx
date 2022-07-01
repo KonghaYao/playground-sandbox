@@ -34,11 +34,16 @@ export const Sandbox: Component<{
 
     /* 用于创建 Iframe 对象 */
     const createIframe = IframeFactory(loadFile);
-    const [FileEditor] = createFileEditor();
+    const [FileEditor, controller] = createFileEditor();
     return (
         <sl-split-panel class="forsee-sandbox">
-            <div slot="start">
-                <FileExplorer fs={fs} openFile={(path) => {}}></FileExplorer>
+            <div class="file-box" slot="start">
+                <FileExplorer
+                    fs={fs}
+                    openFile={(path) => {
+                        controller.openFile(path);
+                    }}
+                ></FileExplorer>
                 <FileEditor
                     fileList={["/index.html"]}
                     getFile={async (path) => {
