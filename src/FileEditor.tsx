@@ -1,10 +1,9 @@
 import { Component, createSignal, lazy, onMount, Suspense } from "solid-js";
 import { For } from "solid-js/web";
 import { getIconForFile, getIconForFolder } from "vscode-icons-js";
-import type FS from "@isomorphic-git/lightning-fs";
-import { CDN, Monaco } from "./Monaco/cdn";
 import { getMonaco } from "./Monaco/getMonaco";
-
+import "./Monaco/index.css";
+import { applyTheme, initTheme } from "./Monaco/initTheme";
 type Props = {
     fileList: string[];
     getFile(path: string): Promise<{ code: string; language?: string }>;
@@ -28,12 +27,13 @@ class FileManager {
     mount(container: HTMLElement) {
         this.monacoEditor = monaco.editor.create(container, {
             model: null,
-
+            theme: "github-gist",
             autoIndent: "advanced",
             automaticLayout: true,
             fontFamily: "Consolas",
             fontSize: 16,
         });
+        applyTheme("github-gist");
     }
     prepareFile(path: string, code = "", language = "javascript") {
         if (!this.fileStore.has(path)) {
@@ -74,7 +74,7 @@ class FileManager {
         }
     }
 }
-import "./Monaco/index.css";
+
 /* 文件浏览器 */
 const FileEditorInstance: (controller: FileManager) => Component<Props> =
     (controller) => (props) => {
@@ -128,6 +128,7 @@ export const createFileEditor = () => {
         const Instance = lazy(async () => {
             /* 初始化 monaco */
             await getMonaco();
+            await initTheme();
             return { default: FileEditorInstance(controller) };
         });
         return (

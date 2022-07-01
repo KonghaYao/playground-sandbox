@@ -57,5 +57,7 @@ export const applyTheme = async (name: keyof AllTheme) => {
         ThemeStore[name].json = json;
         monaco.editor.setTheme(name);
         console.log("MonacoEditor 应用样式 " + name);
+    } else {
+        console.error("应用样式错误", name);
     }
 };
