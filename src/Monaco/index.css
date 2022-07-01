@@ -2,7 +2,10 @@
     @apply flex;
 }
 .file-tab {
-    @apply flex justify-between text-xs items-center m-2 cursor-pointer;
+    @apply flex justify-between text-xs items-center p-2 cursor-pointer;
+}
+.select-tab {
+    @apply bg-gray-500;
 }
 .file-tab .material-icons {
     @apply text-xs;

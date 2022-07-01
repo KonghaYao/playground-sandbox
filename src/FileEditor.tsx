@@ -78,7 +78,8 @@ class FileManager {
 /* 文件浏览器 */
 const FileEditorInstance: (controller: FileManager) => Component<Props> =
     (controller) => (props) => {
-        const [fileList] = createSignal(props.fileList);
+        const [fileList, setFileList] = createSignal(props.fileList);
+        const [opening, setOpening] = createSignal(props.fileList[0]);
         onMount(() => {
             // fileList 是初始化参数，并非响应式
             const promises = props.fileList.map(async (path) => {
@@ -96,7 +97,12 @@ const FileEditorInstance: (controller: FileManager) => Component<Props> =
                         {(i) => {
                             const tabName = i.replace(/^.*?([^\/]+)$/, "$1");
                             return (
-                                <div class="file-tab">
+                                <div
+                                    classList={{
+                                        "file-tab": true,
+                                        "select-tab": opening() === i,
+                                    }}
+                                >
                                     <span
                                         onclick={() => controller.openFile(i)}
                                     >
@@ -106,6 +112,10 @@ const FileEditorInstance: (controller: FileManager) => Component<Props> =
                                         class="material-icons"
                                         onclick={() => {
                                             controller.closeFile(i);
+                                            const data = fileList().filter(
+                                                (item) => item !== i
+                                            );
+                                            setFileList(data);
                                         }}
                                     >
                                         close
