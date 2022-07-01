@@ -1,0 +1,6 @@
+.file-tabs {
+    @apply flex;
+}
+.file-tab {
+    @apply flex justify-between;
+}

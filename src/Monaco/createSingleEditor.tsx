@@ -33,10 +33,7 @@ export const createSingleEditor: (
             monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
             save
         );
-        // input 事件，不准备使用
-        // monacoEditor.onDidChangeModelContent(() => {
-        //     const code = monacoEditor!.getValue();
-        // });
+
         monacoEditor.addAction({
             id: "save",
             label: "保存",

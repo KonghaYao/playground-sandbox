@@ -20,7 +20,7 @@ const Previewer: Component<{
         </div>
     );
 };
-
+import { createFileEditor } from "./FileEditor";
 import { FileExplorer } from "./FileExplorer";
 export const Sandbox: Component<{
     storeTag?: string;
@@ -34,11 +34,21 @@ export const Sandbox: Component<{
 
     /* 用于创建 Iframe 对象 */
     const createIframe = IframeFactory(loadFile);
+    const [FileEditor] = createFileEditor();
     return (
         <sl-split-panel class="forsee-sandbox">
             <div slot="start">
                 <FileExplorer fs={fs} openFile={(path) => {}}></FileExplorer>
-                <nav class="file-editor"></nav>
+                <FileEditor
+                    fileList={["/index.html"]}
+                    getFile={async (path) => {
+                        const code = (await fs.promises.readFile(
+                            path,
+                            "utf8"
+                        )) as any as string;
+                        return { code };
+                    }}
+                ></FileEditor>
             </div>
             <div slot="end">
                 <Previewer port={port} ready={createIframe}></Previewer>
