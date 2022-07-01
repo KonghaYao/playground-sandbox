@@ -42,7 +42,9 @@ export const Sandbox: Component<{
                     fs={fs}
                     openFile={(path) => {
                         console.log(path);
-                        controller.openFile(path);
+                        fs.promises.readFile(path, "utf8").then((res) => {
+                            controller.openFile(path, res as any as string);
+                        });
                     }}
                 ></FileExplorer>
                 <FileEditor
