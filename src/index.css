@@ -1,13 +1,13 @@
 @import url("https://cdn.jsdelivr.net/npm/@fontsource/material-icons/index.css");
 .forsee-sandbox {
-    @apply h-full  w-full bg-gray-800 text-white;
+    @apply h-full w-full bg-gray-800 text-white;
 }
 .file-box {
     @apply flex h-full;
 }
 /* 文件浏览器 */
 .file-explorer {
-    @apply select-none h-full;
+    @apply select-none h-full text-xs;
 }
 .file-explorer header {
     @apply flex items-center;
@@ -43,4 +43,7 @@
 }
 .previewer header input {
     @apply w-full m-2;
+}
+.previewer .iframe-container {
+    @apply h-full flex-grow;
 }

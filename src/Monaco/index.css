@@ -1,5 +1,5 @@
 .file-tabs {
-    @apply flex;
+    @apply flex items-center;
 }
 .file-tab {
     @apply flex justify-between text-xs items-center p-2 cursor-pointer;
@@ -10,6 +10,10 @@
 .file-tab .material-icons {
     @apply text-xs;
 }
+.file-tab img {
+    @apply h-4 w-4;
+}
+
 .file-editor {
     @apply w-full h-full flex-grow overflow-hidden flex flex-col;
 }

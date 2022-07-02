@@ -11,13 +11,13 @@ const Previewer: Component<{
     ready: (el: HTMLElement) => void;
 }> = (props) => {
     return (
-        <div class="previewer">
+        <>
             <header>
                 <div class="material-icons">replay</div>
                 <input type="text"></input>
             </header>
-            <main ref={(el) => props.ready(el)}></main>
-        </div>
+            <main class="iframe-container" ref={(el) => props.ready(el)}></main>
+        </>
     );
 };
 import { createFileEditor } from "./FileEditor";
@@ -58,7 +58,7 @@ export const Sandbox: Component<{
                     }}
                 ></FileEditor>
             </div>
-            <div slot="end">
+            <div class="previewer" slot="end">
                 <Previewer port={port} ready={createIframe}></Previewer>
             </div>
         </sl-split-panel>

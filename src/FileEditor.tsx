@@ -1,6 +1,7 @@
 import { Component, createSignal, lazy, onMount, Suspense } from "solid-js";
 import { For } from "solid-js/web";
-import { getIconForFile, getIconForFolder } from "vscode-icons-js";
+import { getIconForFolder } from "vscode-icons-js";
+import { FileTab } from "./FileTab/FileTab";
 import { getMonaco } from "./Monaco/getMonaco";
 import "./Monaco/index.css";
 import { applyTheme, initTheme } from "./Monaco/initTheme";
@@ -32,6 +33,7 @@ class FileManager {
             automaticLayout: true,
             fontFamily: "Consolas",
             fontSize: 16,
+            minimap: { enabled: false },
         });
         applyTheme("github-gist");
     }
@@ -60,11 +62,15 @@ class FileManager {
         console.log(file);
         file ? this.monacoEditor.setModel(file.model) : null;
     }
+    /* 关闭一个文件 */
     closeFile(path: string) {
         const old = this.fileStore.get(path);
         if (old) {
             old.destroy();
             this.fileStore.delete(path);
+        }
+        const model = this.monacoEditor.getModel();
+        if (model === null) {
             this.openFirst();
         }
     }
@@ -76,12 +82,39 @@ class FileManager {
         }
     }
 }
-
+export const FileTabs: Component<{
+    fileList: string[];
+}> = (props) => {
+    const [fileList, setFileList] = createSignal(props.fileList);
+    const [opening, setOpening] = createSignal(props.fileList[0]);
+    return (
+        <div class="file-tabs">
+            <For each={fileList()}>
+                {(i) => {
+                    const tabName = i.replace(/^.*?([^\/]+)$/, "$1");
+                    return (
+                        <FileTab
+                            name={tabName}
+                            path={i}
+                            selected={opening() === i}
+                            onselect={() => controller.openFile(i)}
+                            onclose={() => {
+                                controller.closeFile(i);
+                                const data = fileList().filter(
+                                    (item) => item !== i
+                                );
+                                setFileList(data);
+                            }}
+                        ></FileTab>
+                    );
+                }}
+            </For>
+        </div>
+    );
+};
 /* 文件浏览器 */
 const FileEditorInstance: (controller: FileManager) => Component<Props> =
     (controller) => (props) => {
-        const [fileList, setFileList] = createSignal(props.fileList);
-        const [opening, setOpening] = createSignal(props.fileList[0]);
         onMount(() => {
             // fileList 是初始化参数，并非响应式
             const promises = props.fileList.map(async (path) => {
@@ -94,39 +127,7 @@ const FileEditorInstance: (controller: FileManager) => Component<Props> =
         });
         return (
             <nav class="file-editor">
-                <div class="file-tabs">
-                    <For each={fileList()}>
-                        {(i) => {
-                            const tabName = i.replace(/^.*?([^\/]+)$/, "$1");
-                            return (
-                                <div
-                                    classList={{
-                                        "file-tab": true,
-                                        "select-tab": opening() === i,
-                                    }}
-                                >
-                                    <span
-                                        onclick={() => controller.openFile(i)}
-                                    >
-                                        {tabName}
-                                    </span>
-                                    <span
-                                        class="material-icons"
-                                        onclick={() => {
-                                            controller.closeFile(i);
-                                            const data = fileList().filter(
-                                                (item) => item !== i
-                                            );
-                                            setFileList(data);
-                                        }}
-                                    >
-                                        close
-                                    </span>
-                                </div>
-                            );
-                        }}
-                    </For>
-                </div>
+                <FileTabs fileList={props.fileList}></FileTabs>
                 <div
                     class="editor"
                     ref={(el: HTMLDivElement) => controller.mount(el)}
