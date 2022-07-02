@@ -5,35 +5,19 @@ import { Component } from "solid-js";
 import { IframeFactory } from "./IframeFactory";
 import "./index.css";
 
-/* 用于承载 Iframe */
-const Previewer: Component<{
-    port?: MessagePort;
-    ready: (el: HTMLElement) => void;
-}> = (props) => {
-    return (
-        <>
-            <header class="bg-green-400">
-                <div>replay</div>
-                <input type="text"></input>
-            </header>
-            <main class="iframe-container" ref={(el) => props.ready(el)}></main>
-        </>
-    );
-};
 import { createFileEditor } from "./FileEditor";
 import { FileExplorer } from "./FileExplorer";
+import { Previewer } from "./Previewer";
 export const Sandbox: Component<{
     storeTag?: string;
 }> = (props = {}) => {
     const fs = new FS(props.storeTag || "_rollup_web_store_");
-    let port: MessagePort | undefined = undefined;
+
     /* 加载文件的方式 */
     const loadFile = async (url: string) => {
         return fs.promises.readFile(url, "utf8") as Promise<string>;
     };
 
-    /* 用于创建 Iframe 对象 */
-    const createIframe = IframeFactory(loadFile);
     const [FileEditor, controller] = createFileEditor();
     controller.hub.on("save", (model) => {
         fs.promises.writeFile(model.path, model.model.getValue());
@@ -63,7 +47,7 @@ export const Sandbox: Component<{
                 ></FileEditor>
             </div>
             <div class="previewer" slot="end">
-                <Previewer port={port} ready={createIframe}></Previewer>
+                <Previewer loadFile={loadFile}></Previewer>
             </div>
         </sl-split-panel>
     );
