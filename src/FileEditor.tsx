@@ -21,10 +21,16 @@ class FileModel {
         this.model.dispose();
     }
 }
+import mitt from "mitt";
 class FileManager {
     fileStore = new Map<string, FileModel>();
     monacoEditor!: ReturnType<typeof monaco["editor"]["create"]>;
-
+    /* 向外发送事件的hub */
+    hub = mitt<{
+        prepare: string;
+        open: string;
+        close: string;
+    }>();
     mount(container: HTMLElement) {
         this.monacoEditor = monaco.editor.create(container, {
             model: null,
@@ -43,6 +49,7 @@ class FileManager {
             const model = new FileModel();
             model.init(path, code, language);
             this.fileStore.set(path, model);
+            this.hub.emit("prepare", path);
         }
     }
     /* 打开文件，如果没有则创建，如果有则直接打开 */
@@ -54,13 +61,16 @@ class FileManager {
             model.init(path, code, language);
             this.fileStore.set(path, model);
             this.monacoEditor.setModel(model.model);
+            this.hub.emit("open", path);
         }
     }
     /* 打开存在的一个文件 */
     openExistFile(path: string) {
         const file = this.fileStore.get(path);
-        console.log(file);
-        file ? this.monacoEditor.setModel(file.model) : null;
+        if (file) {
+            this.monacoEditor.setModel(file.model);
+            this.hub.emit("open", path);
+        }
     }
     /* 关闭一个文件 */
     closeFile(path: string) {
@@ -68,6 +78,7 @@ class FileManager {
         if (old) {
             old.destroy();
             this.fileStore.delete(path);
+            this.hub.emit("close", path);
         }
         const model = this.monacoEditor.getModel();
         if (model === null) {
@@ -84,9 +95,23 @@ class FileManager {
 }
 export const FileTabs: Component<{
     fileList: string[];
+    onselect: (i: string) => void;
+    onclose: (i: string) => void;
+    hub: FileManager["hub"];
 }> = (props) => {
     const [fileList, setFileList] = createSignal(props.fileList);
     const [opening, setOpening] = createSignal(props.fileList[0]);
+    props.hub.on("open", (path) => {
+        const list = fileList();
+        if (list.indexOf(path) === -1) {
+            setFileList([path, ...list]);
+        }
+        setOpening(path);
+    });
+    props.hub.on("close", (path) => {
+        const list = fileList();
+        setFileList(list.filter((item) => item !== path));
+    });
     return (
         <div class="file-tabs">
             <For each={fileList()}>
@@ -97,13 +122,9 @@ export const FileTabs: Component<{
                             name={tabName}
                             path={i}
                             selected={opening() === i}
-                            onselect={() => controller.openFile(i)}
+                            onselect={() => props.onselect(i)}
                             onclose={() => {
-                                controller.closeFile(i);
-                                const data = fileList().filter(
-                                    (item) => item !== i
-                                );
-                                setFileList(data);
+                                props.onclose(i);
                             }}
                         ></FileTab>
                     );
@@ -127,7 +148,14 @@ const FileEditorInstance: (controller: FileManager) => Component<Props> =
         });
         return (
             <nav class="file-editor">
-                <FileTabs fileList={props.fileList}></FileTabs>
+                <FileTabs
+                    fileList={props.fileList}
+                    hub={controller.hub}
+                    onselect={(i) => controller.openFile(i)}
+                    onclose={(i) => {
+                        controller.closeFile(i);
+                    }}
+                ></FileTabs>
                 <div
                     class="editor"
                     ref={(el: HTMLDivElement) => controller.mount(el)}
