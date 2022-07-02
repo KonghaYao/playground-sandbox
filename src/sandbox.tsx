@@ -12,8 +12,8 @@ const Previewer: Component<{
 }> = (props) => {
     return (
         <>
-            <header>
-                <div class="material-icons">replay</div>
+            <header class="bg-green-400">
+                <div>replay</div>
                 <input type="text"></input>
             </header>
             <main class="iframe-container" ref={(el) => props.ready(el)}></main>

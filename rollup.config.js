@@ -14,10 +14,10 @@ export default {
         },
     },
     plugins: [
-        postcss(),
         nodeResolve({
-            extensions: [".ts", ".tsx"],
+            extensions: [".ts", ".tsx", ".js"],
         }),
+        postcss(),
         babel({
             babelHelpers: "bundled",
             extensions: ["", ".ts", ".tsx"],

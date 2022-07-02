@@ -124,6 +124,13 @@ export class FileManager {
         }
     }
 }
+
+// const changeLanguage = (language: string) => {
+//     const monacoEditor = getMonacoEditor();
+//     if (!monacoEditor) return;
+//     monaco.editor.setModelLanguage(monacoEditor.getModel()!, language);
+//     console.log("语言更换为 " + language);
+// };
 /* 文件浏览器 */
 const FileEditorInstance: (controller: FileManager) => Component<Props> =
     (controller) => (props) => {

@@ -1,7 +1,7 @@
 import { Accessor, Component, createSignal, For, Setter } from "solid-js";
 import { getIconForFile, getIconForFolder } from "vscode-icons-js";
 import type FS from "@isomorphic-git/lightning-fs";
-import { AiFillLeftCircle as Left } from "solid-icons/ai.js";
+import { AiFillLeftCircle as Left } from "solid-icons/ai";
 type Props = {
     fs: FS;
     openFile: (path: string) => void;

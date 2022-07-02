@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
 import { getIconForFile } from "vscode-icons-js";
-import { AiFillCloseCircle as Close } from "solid-icons/ai.js";
+import { AiFillCloseCircle as Close } from "solid-icons/ai";
 export const FileTab: Component<{
     name: string;
     path: string;
