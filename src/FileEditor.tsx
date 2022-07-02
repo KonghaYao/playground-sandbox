@@ -40,8 +40,34 @@ export class FileManager {
             fontSize: 16,
             minimap: { enabled: false },
         });
+        const save = () => {
+            const model = this.monacoEditor.getModel();
+            if (model) {
+                const file = this.findFileCache(model);
+                if (file) this.saveFile(file.path);
+            }
+        };
+        this.monacoEditor.addAction({
+            id: "save", // 菜单项 id
+            label: "保存", // 菜单项名称
+            keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS], // 绑定快捷键，是 monacoEditor 自定义的对应关系
+            contextMenuGroupId: "navigation", // 所属菜单的分组
+            run: save, // 点击后执行的操作
+        });
+        this.monacoEditor.addCommand(
+            monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
+            save
+        );
         applyTheme("github-gist");
     }
+    /* 根据 Model 查找 FileModel */
+    findFileCache(model: FileModel["model"]) {
+        for (let i of this.fileStore.values()) {
+            if (i.model === model) return i;
+        }
+        return false;
+    }
+
     /* 提前准备文件，但是不进行展示 */
     prepareFile(path: string, code = "", language = "javascript") {
         if (!this.fileStore.has(path)) {
