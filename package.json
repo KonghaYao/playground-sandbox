@@ -32,6 +32,7 @@
         "@rollup/plugin-babel": "^5.3.1",
         "mitt": "^3.0.0",
         "monaco-themes": "^0.4.2",
+        "solid-icons": "^0.4.13",
         "solid-js": "^1.4.5",
         "vscode-icons-js": "^11.6.1"
     },

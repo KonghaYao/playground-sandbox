@@ -1,4 +1,3 @@
-@import url("https://cdn.jsdelivr.net/npm/@fontsource/material-icons/index.css");
 .forsee-sandbox {
     @apply h-full w-full bg-gray-800 text-white;
 }

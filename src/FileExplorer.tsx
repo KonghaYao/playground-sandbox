@@ -1,7 +1,7 @@
 import { Accessor, Component, createSignal, For, Setter } from "solid-js";
 import { getIconForFile, getIconForFolder } from "vscode-icons-js";
 import type FS from "@isomorphic-git/lightning-fs";
-
+import { AiFillLeftCircle as Left } from "solid-icons/ai.js";
 type Props = {
     fs: FS;
     openFile: (path: string) => void;
@@ -26,9 +26,7 @@ export const FileExplorer: Component<Props> = (props) => {
     return (
         <nav class="file-explorer">
             <header>
-                <div class="material-icons" onclick={back}>
-                    keyboard_arrow_left
-                </div>
+                <Left onclick={back}></Left>
                 <input type="text" value={path()} />
             </header>
             <div class="file-list bg-white">
