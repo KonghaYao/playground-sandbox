@@ -1,7 +1,4 @@
-import { Component, createSignal, lazy, onMount, Suspense } from "solid-js";
-import { For } from "solid-js/web";
-import { getIconForFolder } from "vscode-icons-js";
-import { FileTab } from "./FileTab/FileTab";
+import { Component, lazy, onMount, Suspense } from "solid-js";
 import { getMonaco } from "./Monaco/getMonaco";
 import "./Monaco/index.css";
 import { applyTheme, initTheme } from "./Monaco/initTheme";
@@ -22,7 +19,8 @@ class FileModel {
     }
 }
 import mitt from "mitt";
-class FileManager {
+import { FileTabs } from "./FileTab/FileTabs";
+export class FileManager {
     fileStore = new Map<string, FileModel>();
     monacoEditor!: ReturnType<typeof monaco["editor"]["create"]>;
     /* 向外发送事件的hub */
@@ -30,6 +28,7 @@ class FileManager {
         prepare: string;
         open: string;
         close: string;
+        save: FileModel;
     }>();
     mount(container: HTMLElement) {
         this.monacoEditor = monaco.editor.create(container, {
@@ -92,47 +91,13 @@ class FileManager {
             this.openExistFile(path);
         }
     }
-}
-export const FileTabs: Component<{
-    fileList: string[];
-    onselect: (i: string) => void;
-    onclose: (i: string) => void;
-    hub: FileManager["hub"];
-}> = (props) => {
-    const [fileList, setFileList] = createSignal(props.fileList);
-    const [opening, setOpening] = createSignal(props.fileList[0]);
-    props.hub.on("open", (path) => {
-        const list = fileList();
-        if (list.indexOf(path) === -1) {
-            setFileList([path, ...list]);
+    saveFile(path: string) {
+        const file = this.fileStore.get(path);
+        if (file) {
+            this.hub.emit("save", file);
         }
-        setOpening(path);
-    });
-    props.hub.on("close", (path) => {
-        const list = fileList();
-        setFileList(list.filter((item) => item !== path));
-    });
-    return (
-        <div class="file-tabs">
-            <For each={fileList()}>
-                {(i) => {
-                    const tabName = i.replace(/^.*?([^\/]+)$/, "$1");
-                    return (
-                        <FileTab
-                            name={tabName}
-                            path={i}
-                            selected={opening() === i}
-                            onselect={() => props.onselect(i)}
-                            onclose={() => {
-                                props.onclose(i);
-                            }}
-                        ></FileTab>
-                    );
-                }}
-            </For>
-        </div>
-    );
-};
+    }
+}
 /* 文件浏览器 */
 const FileEditorInstance: (controller: FileManager) => Component<Props> =
     (controller) => (props) => {
@@ -163,6 +128,7 @@ const FileEditorInstance: (controller: FileManager) => Component<Props> =
             </nav>
         );
     };
+
 export const createFileEditor = () => {
     const controller = new FileManager();
     const FileEditor: Component<Props> = (props) => {

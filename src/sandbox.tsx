@@ -35,6 +35,10 @@ export const Sandbox: Component<{
     /* 用于创建 Iframe 对象 */
     const createIframe = IframeFactory(loadFile);
     const [FileEditor, controller] = createFileEditor();
+    controller.hub.on("save", (model) => {
+        fs.promises.writeFile(model.path, model.model.getValue());
+        console.log("写入 ", model.path, "成功");
+    });
     return (
         <sl-split-panel class="forsee-sandbox">
             <div class="file-box" slot="start">
