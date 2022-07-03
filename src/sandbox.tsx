@@ -2,7 +2,6 @@ import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.77/dist
 import { FS } from "./Helper";
 export { FS };
 import { Component } from "solid-js";
-import { IframeFactory } from "./IframeFactory";
 import "./index.css";
 
 import { createFileEditor } from "./FileEditor";
