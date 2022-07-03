@@ -1,3 +1,4 @@
+import alias from "@rollup/plugin-alias";
 import babel from "@rollup/plugin-babel";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import fs from "fs";
@@ -15,9 +16,19 @@ export default {
         },
     },
     plugins: [
+        alias({
+            entries: [
+                // 这个库的导出出现了问题，我们将其导出改为 Index.ts
+                {
+                    find: "vscode-icons-js",
+                    replacement: "vscode-icons-js/src/Index",
+                },
+            ],
+        }),
         nodeResolve({
             extensions: [".ts", ".tsx", ".js"],
         }),
+        // 解决 svg 模块问题
         {
             name: "svg",
             async load(id) {
