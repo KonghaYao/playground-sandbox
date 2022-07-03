@@ -1,23 +1,29 @@
-import { Component } from "solid-js";
-import { IframeFactory, LoadFile } from "./IframeFactory";
+import { Component, onMount } from "solid-js";
+import { CompilerManager, IframeFactory, LoadFile } from "./IframeFactory";
 /* 用于承载 Iframe */
 export const Previewer: Component<{
     port?: MessagePort;
     loadFile: LoadFile;
 }> = (props) => {
+    let container: HTMLElement;
+    let manager: CompilerManager;
+    onMount(async () => {
+        const [Manager] = await IframeFactory(container, props.loadFile);
+        manager = Manager;
+    });
     return (
         <>
             <header class="bg-green-400">
-                <div>replay</div>
+                <div
+                    onclick={() => {
+                        manager.reload();
+                    }}
+                >
+                    replay
+                </div>
                 <input type="text"></input>
             </header>
-            <main
-                class="iframe-container"
-                ref={(el) => {
-                    /* 用于创建 Iframe 对象 */
-                    IframeFactory(el, props.loadFile);
-                }}
-            ></main>
+            <main class="iframe-container" ref={container!}></main>
         </>
     );
 };

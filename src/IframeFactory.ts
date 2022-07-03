@@ -3,13 +3,12 @@ export type LoadFile = (string: string) => Promise<string>;
 
 type Config = { target?: string; compiler?: { url?: string } };
 
-class CompilerManager {
+export class CompilerManager {
     /** Compiler 线程的代码，通过这个代码判断是否为同一个 */
     code = "";
 
     config!: Config;
     iframe?: IframeEnv = undefined;
-    port?: MessagePort = undefined;
     constructor(public container: HTMLElement, public loadFile: LoadFile) {}
     /* 构建 json 配置文件 */
     async loadConfig(setting?: Partial<Config>) {
@@ -18,17 +17,17 @@ class CompilerManager {
             () => ({ ...setting })
         );
     }
+    private evaluator = new Evaluator();
     async createPort() {
         const compilerPath =
             this.config?.compiler?.url || "/rollup.config.web.js";
         const code = await this.loadFile(compilerPath);
         const isSame = this.checkSameCode(code);
         if (isSame) {
-            return this.port!;
+            return this.evaluator.createCompilerPort();
         } else {
             this.code = code;
-            this.port = await this.createCompilerPort(code);
-            return this.port;
+            return this.createCompilerPort(code);
         }
     }
     checkSameCode(code: string) {
@@ -39,20 +38,20 @@ class CompilerManager {
             type: "text/javascript",
         });
         const url = URL.createObjectURL(file);
-        const Eval = new Evaluator();
-        await Eval.useWorker(url);
-        return Eval.createCompilerPort();
+        await this.evaluator.useWorker(url);
+        return this.evaluator.createCompilerPort();
     }
     async build() {
+        const port = await this.createPort(); // 构建 Compiler 线程, 已经经过去重
         // 构建 Iframe
         const iframe = new IframeEnv();
+        this.iframe = iframe;
         const initHTMLPath = this.config.target || "/index.html";
-        this.iframe = IframeEnv;
         await this.loadFile(initHTMLPath).then(() => {
             return iframe.mount({
-                port: this.port,
+                port,
                 container: this.container,
-                getFile(src: string) {
+                getFile: (src: string) => {
                     return this.loadFile(src);
                 },
                 src: initHTMLPath,
@@ -75,7 +74,6 @@ export const IframeFactory = async (
 ) => {
     const manager = new CompilerManager(container, loadFile);
     await manager.loadConfig(setting);
-    await manager.createPort(); // 构建 Compiler 线程, 已经经过去重
     await manager.build();
 
     return [manager] as const;
