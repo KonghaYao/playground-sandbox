@@ -1,7 +1,7 @@
 import { Accessor, Component, createSignal, For, Setter } from "solid-js";
 import { getIconForFile, getIconForFolder } from "vscode-icons-js";
 import type FS from "@isomorphic-git/lightning-fs";
-import { AiFillLeftCircle as Left } from "solid-icons/ai";
+import { Left } from "./Icon";
 type Props = {
     fs: FS;
     openFile: (path: string) => void;
@@ -26,7 +26,7 @@ export const FileExplorer: Component<Props> = (props) => {
     return (
         <nav class="file-explorer">
             <header>
-                <Left onclick={back}></Left>
+                <div onclick={back}>{Left()}</div>
                 <input type="text" value={path()} />
             </header>
             <div class="file-list bg-white">
@@ -46,6 +46,7 @@ export const FileExplorer: Component<Props> = (props) => {
         </nav>
     );
 };
+
 /* 单个的文件的选项卡 */
 export const FileTab: Component<{
     name: string;

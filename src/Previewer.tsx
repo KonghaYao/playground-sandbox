@@ -1,4 +1,5 @@
-import { Component, onMount } from "solid-js";
+import { Component, onCleanup, onMount } from "solid-js";
+import { Refresh } from "./Icon";
 import { CompilerManager, IframeFactory, LoadFile } from "./IframeFactory";
 /* 用于承载 Iframe */
 export const Previewer: Component<{
@@ -11,6 +12,9 @@ export const Previewer: Component<{
         const [Manager] = await IframeFactory(container, props.loadFile);
         manager = Manager;
     });
+    onCleanup(() => {
+        manager.destroy();
+    });
     return (
         <>
             <header class="bg-green-400">
@@ -19,7 +23,7 @@ export const Previewer: Component<{
                         manager.reload();
                     }}
                 >
-                    replay
+                    {Refresh()}
                 </div>
                 <input type="text"></input>
             </header>

@@ -7,6 +7,11 @@ import "./index.css";
 import { createFileEditor } from "./FileEditor";
 import { FileExplorer } from "./FileExplorer";
 import { Previewer } from "./Previewer";
+
+/* 
+icon https://microsoft.github.io/vscode-codicons/dist/codicon.html
+*/
+
 export const Sandbox: Component<{
     storeTag?: string;
 }> = (props = {}) => {

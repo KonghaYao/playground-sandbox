@@ -66,7 +66,10 @@ export class CompilerManager {
         this.iframe.destroy();
         this.build();
     }
-    destroy() {}
+    destroy() {
+        this.iframe.destroy();
+        this.evaluator.compiler?.destroy();
+    }
 }
 
 export const IframeFactory = async (

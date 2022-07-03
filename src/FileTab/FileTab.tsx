@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
 import { getIconForFile } from "vscode-icons-js";
-import { AiFillCloseCircle as Close } from "solid-icons/ai";
+import { Close } from "../Icon";
 export const FileTab: Component<{
     name: string;
     path: string;
@@ -21,10 +21,7 @@ export const FileTab: Component<{
             <img height="1em" width="1em" src={src} alt="" />
 
             <span onclick={() => props.onselect()}>{props.name}</span>
-            <Close
-                class="material-icons"
-                onclick={() => props.onclose()}
-            ></Close>
+            <div onclick={() => props.onclose()}>{Close()}</div>
         </div>
     );
 };
