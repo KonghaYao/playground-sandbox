@@ -27,17 +27,19 @@ export class CompilerManager {
             return this.evaluator.createCompilerPort();
         } else {
             this.code = code;
-            return this.createCompilerPort(code);
+            return this.recreateCompilerPort(code);
         }
     }
     checkSameCode(code: string) {
         return this.code !== "" && code === this.code;
     }
-    async createCompilerPort(code: string): Promise<MessagePort> {
+    /* 重置 Compiler */
+    async recreateCompilerPort(code: string): Promise<MessagePort> {
         const file = new File([code], "index.js", {
             type: "text/javascript",
         });
         const url = URL.createObjectURL(file);
+        this.evaluator.Compiler?.destroy();
         await this.evaluator.useWorker(url);
         return this.evaluator.createCompilerPort();
     }
