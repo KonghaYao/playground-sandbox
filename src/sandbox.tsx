@@ -1,6 +1,5 @@
-import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.77/dist/components/split-panel/split-panel.js";
+import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
 import { FS } from "./Helper";
-export { FS };
 import { Component } from "solid-js";
 import "./index.css";
 

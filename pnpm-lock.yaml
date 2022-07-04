@@ -21,6 +21,7 @@ specifiers:
   rollup-plugin-analyzer: ^4.0.0
   rollup-plugin-postcss: ^4.0.2
   rollup-plugin-terser: ^7.0.2
+  solid-element: ^1.4.6
   solid-js: ^1.4.5
   tailwindcss: ^3.1.4
   typescript: ^4.5.4
@@ -51,6 +52,7 @@ devDependencies:
   rollup-plugin-analyzer: 4.0.0
   rollup-plugin-postcss: 4.0.2_postcss@8.4.14
   rollup-plugin-terser: 7.0.2_rollup@2.75.7
+  solid-element: 1.4.6_solid-js@1.4.5
   tailwindcss: 3.1.4
   typescript: 4.6.3
 
@@ -786,6 +788,10 @@ packages:
 
   /commondir/1.0.1:
     resolution: {integrity: sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg==}
+    dev: true
+
+  /component-register/0.8.3:
+    resolution: {integrity: sha512-/0u8ov0WPWi2FL78rgB9aFOcfY8pJT4jP/l9NTOukGNLVQ6hk35sEJE1RkEnNQU3yk48Qr7HlDQjRQKEVfgeWg==}
     dev: true
 
   /concat-map/0.0.1:
@@ -1965,6 +1971,15 @@ packages:
   /slash/3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
+    dev: true
+
+  /solid-element/1.4.6_solid-js@1.4.5:
+    resolution: {integrity: sha512-JpS9n95HgX9HXt9yqlWCW4jWZR1zB6u8YPh7EnIGd5PrhK1UO2KvzCZLuZoHij1NOc1kte0cvQnjSytFB1pk1g==}
+    peerDependencies:
+      solid-js: ^1.0.0
+    dependencies:
+      component-register: 0.8.3
+      solid-js: 1.4.5
     dev: true
 
   /solid-js/1.4.5:

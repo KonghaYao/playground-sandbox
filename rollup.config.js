@@ -18,7 +18,7 @@ export default {
     output: {
         file: "./dist/test.js",
         format: "es",
-        path: {
+        paths: {
             // 这个库 40k
             "vscode-icons-js": "https://cdn.skypack.dev/vscode-icons-js",
             // 两个主要的库也可以使用 cdn
@@ -65,7 +65,9 @@ export default {
                 }
             },
         },
-        postcss(),
+        postcss({
+            extensions: [".css"],
+        }),
         babel({
             babelHelpers: "bundled",
             extensions: [".ts", ".tsx", ".js", ".svg"],
