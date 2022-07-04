@@ -1,0 +1,19 @@
+/* 预览窗口 */
+.previewer {
+    @apply h-full w-full flex flex-col overflow-hidden;
+    main {
+        @apply flex-grow bg-white;
+    }
+    header {
+        @apply h-8 w-full flex items-center bg-gray-700;
+        .icons {
+            @apply m-1 bg-gray-600 cursor-pointer;
+        }
+        input {
+            @apply w-full m-2;
+        }
+    }
+    .iframe-container {
+        @apply h-full flex-grow;
+    }
+}

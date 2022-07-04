@@ -1,7 +1,7 @@
 import { Component, lazy, onMount, Suspense } from "solid-js";
-import { getMonaco } from "./Monaco/getMonaco";
-import "./Monaco/index.css";
-import { applyTheme, initTheme } from "./Monaco/initTheme";
+import { getMonaco } from "./getMonaco";
+import monacoStyle from "./Monaco/index.less";
+import { applyTheme, initTheme } from "./initTheme";
 type Props = {
     fileList: string[];
     getFile(path: string): Promise<{ code: string; language?: string }>;
@@ -19,7 +19,7 @@ class FileModel {
     }
 }
 import mitt from "mitt";
-import { FileTabs } from "./FileTab/FileTabs";
+import { FileTabs } from "../FileTab/FileTabs";
 export class FileManager {
     fileStore = new Map<string, FileModel>();
     monacoEditor!: ReturnType<typeof monaco["editor"]["create"]>;
@@ -172,10 +172,13 @@ export const createFileEditor = () => {
             return { default: FileEditorInstance(controller) };
         });
         return (
-            <Suspense
-                fallback={<div>Loading</div>}
-                children={[<Instance {...props}></Instance>]}
-            ></Suspense>
+            <>
+                <Suspense
+                    fallback={<div>Loading</div>}
+                    children={[<Instance {...props}></Instance>]}
+                ></Suspense>
+                <style>{monacoStyle}</style>
+            </>
         );
     };
     return [FileEditor, controller] as const;

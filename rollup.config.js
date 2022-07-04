@@ -67,7 +67,7 @@ export default {
         },
         postcss({
             inject: false,
-            extensions: [".css"],
+            extensions: [".css", ".less"],
         }),
         babel({
             babelHelpers: "bundled",

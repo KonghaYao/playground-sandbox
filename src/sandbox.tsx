@@ -1,15 +1,13 @@
 import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
 import { FS } from "./Helper";
 import { Component } from "solid-js";
-import style from "./style/split-panel.css";
-
-import { createFileEditor } from "./FileEditor";
+import { createFileEditor } from "./FileEditor/FileEditor";
 import { FileExplorer } from "./FileExplorer";
 import { Previewer } from "./Previewer";
 
-/* 
-icon https://microsoft.github.io/vscode-codicons/dist/codicon.html
-*/
+import style from "./style/split-panel.less";
+import editorStyle from "./style/editor.less";
+import previewStyle from "./style/preview.less";
 
 export const Sandbox: Component<{
     storeTag?: string;
@@ -49,9 +47,11 @@ export const Sandbox: Component<{
                             return { code };
                         }}
                     ></FileEditor>
+                    <style>{editorStyle}</style>
                 </div>
                 <div class="previewer" slot="end">
                     <Previewer loadFile={loadFile}></Previewer>
+                    <style>{previewStyle}</style>
                 </div>
             </sl-split-panel>
             <style>{style}</style>

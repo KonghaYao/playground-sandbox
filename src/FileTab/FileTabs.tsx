@@ -1,7 +1,7 @@
 import { Component, createSignal, onCleanup } from "solid-js";
 import { For } from "solid-js/web";
 import { FileTab } from "./FileTab";
-import { FileManager } from "../FileEditor";
+import { FileManager } from "../FileEditor/FileEditor";
 
 export const FileTabs: Component<{
     fileList: string[];

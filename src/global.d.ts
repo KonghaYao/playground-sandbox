@@ -5,7 +5,7 @@ declare module "*.svg" {
     const a: () => SVGViewElement;
     export default a;
 }
-declare module "*.css" {
+declare module "*.less" {
     const a: string;
     export default a;
 }
