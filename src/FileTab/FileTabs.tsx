@@ -1,6 +1,7 @@
 import { Component, createSignal, onCleanup } from "solid-js";
 import { For } from "solid-js/web";
-import style from "./FileTabs.less";
+import style from "./FileTabs.module.less";
+
 import { FileTab } from "./FileTab";
 import { FileManager } from "../FileEditor/FileEditor";
 
@@ -33,7 +34,7 @@ export const FileTabs: Component<{
     });
     return (
         <>
-            <div class="file-tabs">
+            <div class={style.file_tabs}>
                 <For each={fileList()}>
                     {(i) => {
                         const tabName = i.replace(/^.*?([^\/]+)$/, "$1");
@@ -51,7 +52,6 @@ export const FileTabs: Component<{
                     }}
                 </For>
             </div>
-            <style>{style}</style>
         </>
     );
 };

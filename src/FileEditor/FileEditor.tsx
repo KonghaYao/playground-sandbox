@@ -1,6 +1,6 @@
 import { Component, lazy, onMount, Suspense } from "solid-js";
 import { getMonaco } from "./getMonaco";
-import monacoStyle from "./FileEditor.less";
+import style from "./FileEditor.module.less";
 import { applyTheme, initTheme } from "./initTheme";
 type Props = {
     fileList: string[];
@@ -146,7 +146,7 @@ const FileEditorInstance: (controller: FileManager) => Component<Props> =
         });
         return (
             <>
-                <nav class="file-editor">
+                <nav class={style.file_editor}>
                     <FileTabs
                         fileList={props.fileList}
                         hub={controller.hub}
@@ -160,7 +160,6 @@ const FileEditorInstance: (controller: FileManager) => Component<Props> =
                         ref={(el: HTMLDivElement) => controller.mount(el)}
                     ></div>
                 </nav>
-                <style>{monacoStyle}</style>
             </>
         );
     };

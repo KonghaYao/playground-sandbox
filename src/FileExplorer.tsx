@@ -2,6 +2,8 @@ import { Accessor, Component, createSignal, For, Setter } from "solid-js";
 import { getIconForFile, getIconForFolder } from "vscode-icons-js";
 import type FS from "@isomorphic-git/lightning-fs";
 import { Left } from "./Icon";
+import style from "./style/editor.module.less";
+console.log(style);
 type Props = {
     fs: FS;
     openFile: (path: string) => void;
@@ -24,12 +26,12 @@ export const FileExplorer: Component<Props> = (props) => {
     );
     jumpTo(initPath);
     return (
-        <nav class="file-explorer">
+        <nav class={style.file_explorer}>
             <header>
                 <div onclick={back}>{Left()}</div>
                 <input type="text" value={path()} />
             </header>
-            <div class="file-list bg-white">
+            <div class={style.file_list}>
                 <For each={fileList()}>
                     {(item) => {
                         const name = item.name;

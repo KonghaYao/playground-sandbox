@@ -1,6 +1,7 @@
 import { Component } from "solid-js";
 import { getIconForFile } from "vscode-icons-js";
 import { Close } from "../Icon";
+import style from "./FileTabs.module.less";
 export const FileTab: Component<{
     name: string;
     path: string;
@@ -14,7 +15,7 @@ export const FileTab: Component<{
     return (
         <div
             classList={{
-                "file-tab": true,
+                [style.single_tab]: true,
                 "select-tab": props.selected,
             }}
         >

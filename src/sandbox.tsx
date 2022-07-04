@@ -5,9 +5,8 @@ import { createFileEditor } from "./FileEditor/FileEditor";
 import { FileExplorer } from "./FileExplorer";
 import { Previewer } from "./Previewer";
 
-import style from "./sandbox.less";
-import editorStyle from "./style/editor.less";
-import previewStyle from "./style/preview.less";
+import style from "./sandbox.module.less";
+import previewStyle from "./style/preview.module.less";
 
 export const Sandbox: Component<{
     storeTag?: string;
@@ -26,8 +25,8 @@ export const Sandbox: Component<{
     });
     return (
         <>
-            <sl-split-panel class="forsee-sandbox">
-                <div class="file-box" slot="start">
+            <sl-split-panel class={style.sandbox}>
+                <div class={style.file_box} slot="start">
                     <FileExplorer
                         fs={fs}
                         openFile={(path) => {
@@ -47,14 +46,11 @@ export const Sandbox: Component<{
                             return { code };
                         }}
                     ></FileEditor>
-                    <style>{editorStyle}</style>
                 </div>
-                <div class="previewer" slot="end">
+                <div class={previewStyle.previewer} slot="end">
                     <Previewer loadFile={loadFile}></Previewer>
-                    <style>{previewStyle}</style>
                 </div>
             </sl-split-panel>
-            <style>{style}</style>
         </>
     );
 };

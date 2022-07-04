@@ -66,7 +66,10 @@ export default {
             },
         },
         postcss({
-            inject: false,
+            inject: true,
+            minimize: {},
+            modules: {},
+            sourceMap: false,
             extensions: [".css", ".less"],
         }),
         babel({
