@@ -26,6 +26,7 @@
         "src/**/*.ts",
         "src/**/*.d.ts",
         "src/worker.js",
-        "src/sandbox.tsx"
+        "src/sandbox.tsx",
+        "src/utils/injectStyle.tsx"
     ]
 }

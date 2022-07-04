@@ -7,6 +7,4 @@ const fileReflect = async (realPath: string, innerPath: string) => {
 await fileReflect("./test/worker.js", "/rollup.config.web.js");
 await fileReflect("./test/index.html", "/index.html");
 console.log(fs);
-createSandbox("forsee-sandbox");
-const el = document.createElement("forsee-sandbox");
-document.body.appendChild(el);
+createSandbox(document.body);

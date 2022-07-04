@@ -1,8 +1,6 @@
-import { customElement } from "solid-element";
+import { render } from "solid-js/web";
 import { Sandbox } from "./sandbox";
-export const createSandbox = (elementName: string = "forsee-sandbox") => {
-    const comp = customElement(elementName, {}, Sandbox);
-
-    return comp;
+export const createSandbox = (element: HTMLElement) => {
+    render(Sandbox, element);
 };
 export { FS } from "./Helper";
