@@ -1,6 +1,6 @@
 import { Component, lazy, onMount, Suspense } from "solid-js";
 import { getMonaco } from "./getMonaco";
-import monacoStyle from "./Monaco/index.less";
+import monacoStyle from "./FileEditor.less";
 import { applyTheme, initTheme } from "./initTheme";
 type Props = {
     fileList: string[];
