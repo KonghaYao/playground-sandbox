@@ -1,7 +1,7 @@
 import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
 import { FS } from "./Helper";
 import { Component } from "solid-js";
-import "./index.css";
+import style from "./style/split-panel.css";
 
 import { createFileEditor } from "./FileEditor";
 import { FileExplorer } from "./FileExplorer";
@@ -27,31 +27,34 @@ export const Sandbox: Component<{
         console.log("写入 ", model.path, "成功");
     });
     return (
-        <sl-split-panel class="forsee-sandbox">
-            <div class="file-box" slot="start">
-                <FileExplorer
-                    fs={fs}
-                    openFile={(path) => {
-                        console.log(path);
-                        fs.promises.readFile(path, "utf8").then((res) => {
-                            controller.openFile(path, res as any as string);
-                        });
-                    }}
-                ></FileExplorer>
-                <FileEditor
-                    fileList={["/index.html", "/rollup.config.web.js"]}
-                    getFile={async (path) => {
-                        const code = (await fs.promises.readFile(
-                            path,
-                            "utf8"
-                        )) as any as string;
-                        return { code };
-                    }}
-                ></FileEditor>
-            </div>
-            <div class="previewer" slot="end">
-                <Previewer loadFile={loadFile}></Previewer>
-            </div>
-        </sl-split-panel>
+        <>
+            <sl-split-panel class="forsee-sandbox">
+                <div class="file-box" slot="start">
+                    <FileExplorer
+                        fs={fs}
+                        openFile={(path) => {
+                            console.log(path);
+                            fs.promises.readFile(path, "utf8").then((res) => {
+                                controller.openFile(path, res as any as string);
+                            });
+                        }}
+                    ></FileExplorer>
+                    <FileEditor
+                        fileList={["/index.html", "/rollup.config.web.js"]}
+                        getFile={async (path) => {
+                            const code = (await fs.promises.readFile(
+                                path,
+                                "utf8"
+                            )) as any as string;
+                            return { code };
+                        }}
+                    ></FileEditor>
+                </div>
+                <div class="previewer" slot="end">
+                    <Previewer loadFile={loadFile}></Previewer>
+                </div>
+            </sl-split-panel>
+            <style>{style}</style>
+        </>
     );
 };

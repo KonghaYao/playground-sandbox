@@ -66,6 +66,7 @@ export default {
             },
         },
         postcss({
+            inject: false,
             extensions: [".css"],
         }),
         babel({
