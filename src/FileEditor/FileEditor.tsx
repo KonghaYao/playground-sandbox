@@ -156,7 +156,7 @@ const FileEditorInstance: (controller: FileManager) => Component<Props> =
                         }}
                     ></FileTabs>
                     <div
-                        class="editor"
+                        data-class="editor"
                         ref={(el: HTMLDivElement) => controller.mount(el)}
                     ></div>
                 </nav>

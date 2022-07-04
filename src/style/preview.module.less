@@ -1,9 +1,8 @@
 /* 预览窗口 */
 .previewer {
     @apply h-full w-full flex flex-col overflow-hidden;
-    main {
-        @apply flex-grow bg-white;
-    }
+
+    /* router */
     header {
         @apply h-8 w-full flex items-center bg-gray-700;
         .icons {
@@ -13,7 +12,8 @@
             @apply w-full m-2;
         }
     }
-    .iframe-container {
-        @apply h-full flex-grow;
+    /*  iframe */
+    main {
+        @apply flex-grow bg-white;
     }
 }

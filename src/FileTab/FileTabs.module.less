@@ -1,15 +1,15 @@
 .file_tabs {
     @apply flex items-center;
-    .file-tab {
-        @apply flex justify-between text-xs items-center p-2 cursor-pointer;
-        .icons {
-            @apply text-xs;
-        }
-        img {
-            @apply h-4 w-4;
-        }
+}
+.file_tab {
+    @apply flex justify-between text-xs items-center p-2 cursor-pointer;
+    .icons {
+        @apply text-xs;
     }
-    .select-tab {
-        @apply bg-gray-500;
+    img {
+        @apply h-4 w-4;
+    }
+    &[data-selected="true"] {
+        @apply bg-gray-700;
     }
 }

@@ -13,12 +13,7 @@ export const FileTab: Component<{
         "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
         getIconForFile(props.name);
     return (
-        <div
-            classList={{
-                [style.single_tab]: true,
-                "select-tab": props.selected,
-            }}
-        >
+        <div class={style.file_tab} data-selected={props.selected}>
             <img height="1em" width="1em" src={src} alt="" />
 
             <span onclick={() => props.onselect()}>{props.name}</span>

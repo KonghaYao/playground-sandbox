@@ -3,7 +3,6 @@ import { getIconForFile, getIconForFolder } from "vscode-icons-js";
 import type FS from "@isomorphic-git/lightning-fs";
 import { Left } from "./Icon";
 import style from "./style/editor.module.less";
-console.log(style);
 type Props = {
     fs: FS;
     openFile: (path: string) => void;
