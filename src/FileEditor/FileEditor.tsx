@@ -145,20 +145,23 @@ const FileEditorInstance: (controller: FileManager) => Component<Props> =
             });
         });
         return (
-            <nav class="file-editor">
-                <FileTabs
-                    fileList={props.fileList}
-                    hub={controller.hub}
-                    onselect={(i) => controller.openFile(i)}
-                    onclose={(i) => {
-                        controller.closeFile(i);
-                    }}
-                ></FileTabs>
-                <div
-                    class="editor"
-                    ref={(el: HTMLDivElement) => controller.mount(el)}
-                ></div>
-            </nav>
+            <>
+                <nav class="file-editor">
+                    <FileTabs
+                        fileList={props.fileList}
+                        hub={controller.hub}
+                        onselect={(i) => controller.openFile(i)}
+                        onclose={(i) => {
+                            controller.closeFile(i);
+                        }}
+                    ></FileTabs>
+                    <div
+                        class="editor"
+                        ref={(el: HTMLDivElement) => controller.mount(el)}
+                    ></div>
+                </nav>
+                <style>{monacoStyle}</style>
+            </>
         );
     };
 
@@ -172,13 +175,10 @@ export const createFileEditor = () => {
             return { default: FileEditorInstance(controller) };
         });
         return (
-            <>
-                <Suspense
-                    fallback={<div>Loading</div>}
-                    children={[<Instance {...props}></Instance>]}
-                ></Suspense>
-                <style>{monacoStyle}</style>
-            </>
+            <Suspense
+                fallback={<div>Loading</div>}
+                children={[<Instance {...props}></Instance>]}
+            ></Suspense>
         );
     };
     return [FileEditor, controller] as const;

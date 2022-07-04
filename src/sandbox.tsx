@@ -5,7 +5,7 @@ import { createFileEditor } from "./FileEditor/FileEditor";
 import { FileExplorer } from "./FileExplorer";
 import { Previewer } from "./Previewer";
 
-import style from "./style/split-panel.less";
+import style from "./sandbox.less";
 import editorStyle from "./style/editor.less";
 import previewStyle from "./style/preview.less";
 

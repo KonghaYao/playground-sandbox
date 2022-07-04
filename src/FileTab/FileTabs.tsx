@@ -1,5 +1,6 @@
 import { Component, createSignal, onCleanup } from "solid-js";
 import { For } from "solid-js/web";
+import style from "./FileTabs.less";
 import { FileTab } from "./FileTab";
 import { FileManager } from "../FileEditor/FileEditor";
 
@@ -31,23 +32,26 @@ export const FileTabs: Component<{
         props.hub.off("close", event.close);
     });
     return (
-        <div class="file-tabs">
-            <For each={fileList()}>
-                {(i) => {
-                    const tabName = i.replace(/^.*?([^\/]+)$/, "$1");
-                    return (
-                        <FileTab
-                            name={tabName}
-                            path={i}
-                            selected={opening() === i}
-                            onselect={() => props.onselect(i)}
-                            onclose={() => {
-                                props.onclose(i);
-                            }}
-                        ></FileTab>
-                    );
-                }}
-            </For>
-        </div>
+        <>
+            <div class="file-tabs">
+                <For each={fileList()}>
+                    {(i) => {
+                        const tabName = i.replace(/^.*?([^\/]+)$/, "$1");
+                        return (
+                            <FileTab
+                                name={tabName}
+                                path={i}
+                                selected={opening() === i}
+                                onselect={() => props.onselect(i)}
+                                onclose={() => {
+                                    props.onclose(i);
+                                }}
+                            ></FileTab>
+                        );
+                    }}
+                </For>
+            </div>
+            <style>{style}</style>
+        </>
     );
 };
