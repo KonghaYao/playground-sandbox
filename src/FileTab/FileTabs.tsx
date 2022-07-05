@@ -3,7 +3,7 @@ import { For } from "solid-js/web";
 import style from "./FileTabs.module.less";
 
 import { FileTab } from "./FileTab";
-import { FileManager } from "../FileEditor/FileEditor";
+import { FileManager } from "../FileEditor/FileManager";
 
 export const FileTabs: Component<{
     fileList: string[];

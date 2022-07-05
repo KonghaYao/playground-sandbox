@@ -1,12 +1,13 @@
 import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
 import { FS } from "./Helper";
-import { Component } from "solid-js";
+import { Component, onCleanup } from "solid-js";
 import { createFileEditor } from "./FileEditor/FileEditor";
 import { FileExplorer } from "./FileExplorer";
 import { Previewer } from "./Previewer";
 
 import style from "./sandbox.module.less";
 import previewStyle from "./style/preview.module.less";
+import { FileModel } from "./FileEditor/FileModel";
 
 export const Sandbox: Component<{
     storeTag?: string;
@@ -19,9 +20,13 @@ export const Sandbox: Component<{
     };
 
     const [FileEditor, controller] = createFileEditor();
-    controller.hub.on("save", (model) => {
+    const save = (model: FileModel) => {
         fs.promises.writeFile(model.path, model.model.getValue());
         console.log("写入 ", model.path, "成功");
+    };
+    controller.hub.on("save", save);
+    onCleanup(() => {
+        controller.hub.off("save", save);
     });
     return (
         <>

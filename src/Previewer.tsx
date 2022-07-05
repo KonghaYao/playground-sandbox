@@ -14,6 +14,8 @@ export const Previewer: Component<{
     });
     onCleanup(() => {
         manager.destroy();
+        container = undefined as any;
+        manager = undefined as any;
     });
     return (
         <>
