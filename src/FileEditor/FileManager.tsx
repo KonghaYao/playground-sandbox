@@ -11,7 +11,6 @@ import { FileModel } from "./FileModel";
 
 /* 管理 Monaco Editor 的一个类 */
 export class FileManager {
-    fileStore = new Map<string, FileModel>();
     monacoEditor!: ReturnType<typeof monaco["editor"]["create"]>;
     /* 向外发送事件的hub */
     hub = mitt<{
@@ -20,6 +19,10 @@ export class FileManager {
         close: string;
         save: FileModel;
     }>();
+    constructor(
+        public fileStore: Map<string, FileModel>,
+        public id: string | number
+    ) {}
     mount(container: HTMLElement) {
         this.monacoEditor = monaco.editor.create(container, {
             model: null,

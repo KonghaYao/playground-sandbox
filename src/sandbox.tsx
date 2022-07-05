@@ -18,15 +18,18 @@ export const Sandbox: Component<{
     const loadFile = async (url: string) => {
         return fs.promises.readFile(url, "utf8") as Promise<string>;
     };
-
-    const [FileEditor, controller] = createFileEditor();
     const save = (model: FileModel) => {
         fs.promises.writeFile(model.path, model.model.getValue());
         console.log("写入 ", model.path, "成功");
     };
-    controller.hub.on("save", save);
+    const [FileEditor, ControllerList, controller] = createFileEditor(
+        (manager) => {
+            manager.hub.on("save", save);
+        }
+    );
+
     onCleanup(() => {
-        controller.hub.off("save", save);
+        ControllerList.forEach((manager) => manager.hub.off("save", save));
     });
     return (
         <>
@@ -35,22 +38,35 @@ export const Sandbox: Component<{
                     <FileExplorer
                         fs={fs}
                         openFile={(path) => {
-                            console.log(path);
                             fs.promises.readFile(path, "utf8").then((res) => {
-                                controller.openFile(path, res as any as string);
+                                controller
+                                    .getWatching()
+                                    .openFile(path, res as any as string);
                             });
                         }}
                     ></FileExplorer>
-                    <FileEditor
-                        fileList={["/index.html", "/rollup.config.web.js"]}
-                        getFile={async (path) => {
-                            const code = (await fs.promises.readFile(
-                                path,
-                                "utf8"
-                            )) as any as string;
-                            return { code };
-                        }}
-                    ></FileEditor>
+                    <div style="display:flex;flex-direction:column">
+                        <FileEditor
+                            fileList={["/index.html", "/rollup.config.web.js"]}
+                            getFile={async (path) => {
+                                const code = (await fs.promises.readFile(
+                                    path,
+                                    "utf8"
+                                )) as any as string;
+                                return { code };
+                            }}
+                        ></FileEditor>
+                        <FileEditor
+                            fileList={["/rollup.config.web.js"]}
+                            getFile={async (path) => {
+                                const code = (await fs.promises.readFile(
+                                    path,
+                                    "utf8"
+                                )) as any as string;
+                                return { code };
+                            }}
+                        ></FileEditor>
+                    </div>
                 </div>
                 <div class={previewStyle.previewer} slot="end">
                     <Previewer loadFile={loadFile}></Previewer>
