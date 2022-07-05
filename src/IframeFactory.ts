@@ -80,6 +80,5 @@ export const IframeFactory = async (
     const manager = new CompilerManager(container, loadFile);
     await manager.loadConfig(setting);
     await manager.build();
-
     return [manager] as const;
 };
