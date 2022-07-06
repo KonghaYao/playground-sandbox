@@ -10,6 +10,7 @@ export const FileTabs: Component<{
     onselect: (i: string) => void;
     onclose: (i: string) => void;
     hub: FileManager["hub"];
+    closeSelf: Function;
 }> = (props) => {
     const [fileList, setFileList] = createSignal(props.fileList);
     const [opening, setOpening] = createSignal(props.fileList[0]);
@@ -23,7 +24,9 @@ export const FileTabs: Component<{
         },
         close(path: string) {
             const list = fileList();
+
             setFileList(list.filter((item) => item !== path));
+            fileList().length === 0 && props.closeSelf();
         },
     };
     props.hub.on("open", event.open);

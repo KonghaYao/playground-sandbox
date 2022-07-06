@@ -1,18 +1,19 @@
 import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
 import FS from "@isomorphic-git/lightning-fs";
-import { Component, onCleanup } from "solid-js";
+import { Component, createSignal, For, onCleanup } from "solid-js";
 import { createFileEditor } from "./FileEditor/FileEditor";
 import { FileExplorer } from "./FileExplorer";
 import { Previewer } from "./Previewer";
-
 import style from "./sandbox.module.less";
 import previewStyle from "./style/preview.module.less";
 import { FileModel } from "./FileEditor/FileModel";
-
-export const Sandbox: Component<{
+export type SandboxInput = {
     fs: FS;
-}> = (props) => {
+    files: string[][];
+};
+export const Sandbox: Component<SandboxInput> = (props) => {
     const fs = props.fs;
+    const [fileList, setFileList] = createSignal(props.files);
     /* 加载文件的方式 */
     const loadFile = async (url: string) => {
         return fs.promises.readFile(url, "utf8") as Promise<string>;
@@ -20,6 +21,13 @@ export const Sandbox: Component<{
     const save = (model: FileModel) => {
         fs.promises.writeFile(model.path, model.model.getValue());
         console.log("写入 ", model.path, "成功");
+    };
+    const getFile = async (path: string) => {
+        const code = (await fs.promises.readFile(
+            path,
+            "utf8"
+        )) as any as string;
+        return { code };
     };
     const [FileEditor, ControllerList, watchingEditor] = createFileEditor(
         (manager) => {
@@ -45,27 +53,28 @@ export const Sandbox: Component<{
                             });
                         }}
                     ></FileExplorer>
-                    <div style="display:flex;flex-direction:column;flex:1">
-                        <FileEditor
-                            fileList={["/index.html", "/rollup.config.web.js"]}
-                            getFile={async (path) => {
-                                const code = (await fs.promises.readFile(
-                                    path,
-                                    "utf8"
-                                )) as any as string;
-                                return { code };
+                    <div class={style.editor_list}>
+                        <header>
+                            <div>File Editor</div>
+                            <span></span>
+                        </header>
+                        {/* 使用循环遍历构建多个 Editor */}
+                        <For each={fileList()}>
+                            {(el) => {
+                                return (
+                                    <FileEditor
+                                        fileList={el}
+                                        getFile={getFile}
+                                        closeSelf={() => {
+                                            const newList = fileList().filter(
+                                                (i) => !Object.is(i, el)
+                                            );
+                                            setFileList(newList);
+                                        }}
+                                    ></FileEditor>
+                                );
                             }}
-                        ></FileEditor>
-                        <FileEditor
-                            fileList={["/rollup.config.web.js"]}
-                            getFile={async (path) => {
-                                const code = (await fs.promises.readFile(
-                                    path,
-                                    "utf8"
-                                )) as any as string;
-                                return { code };
-                            }}
-                        ></FileEditor>
+                        </For>
                     </div>
                 </div>
                 <div class={previewStyle.previewer} slot="end">

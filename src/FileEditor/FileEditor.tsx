@@ -5,6 +5,7 @@ import { initTheme } from "./initTheme";
 type Props = {
     fileList: string[];
     getFile(path: string): Promise<{ code: string; language?: string }>;
+    closeSelf(): void;
 };
 
 import { FileTabs } from "../FileTab/FileTabs";
@@ -38,6 +39,7 @@ const FileEditorInstance: (
                     onclose={(i) => {
                         controller.closeFile(i);
                     }}
+                    closeSelf={props.closeSelf}
                 ></FileTabs>
                 <div
                     data-class="editor"

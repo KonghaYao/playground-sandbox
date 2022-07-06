@@ -94,22 +94,13 @@ export class FileManager {
     closeFile(path: string) {
         const old = this.fileStore.get(path);
         if (old) {
-            old.destroy();
-            this.fileStore.delete(path);
+            // old.destroy();
+            // ! 注意，虽然关闭了，我们认为为了加载速度考虑，任然保留
+            // this.fileStore.delete(path);
             this.hub.emit("close", path);
         }
-        const model = this.monacoEditor.getModel();
-        if (model === null) {
-            this.openFirst();
-        }
     }
-    /* 打开垫底的文件 */
-    openFirst() {
-        if (this.fileStore.size) {
-            const [[path]] = this.fileStore;
-            this.openExistFile(path);
-        }
-    }
+
     saveFile(path: string) {
         const file = this.fileStore.get(path);
         if (file) {
