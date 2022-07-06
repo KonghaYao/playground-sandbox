@@ -20,8 +20,8 @@ const FileEditorInstance: (
     onMount(() => {
         // fileList 是初始化参数，并非响应式
         const promises = props.fileList.map(async (path) => {
-            const { code, language } = await props.getFile(path);
-            return controller.prepareFile(path, code, language);
+            const { code } = await props.getFile(path);
+            return controller.prepareFile(path, code);
         });
         Promise.all(promises).then(() => {
             controller.openExistFile(props.fileList[0]);

@@ -1,0 +1,19 @@
+/* 文件浏览器 */
+.file_explorer {
+    @apply select-none h-full text-sm flex-grow flex flex-col;
+    header {
+        @apply flex items-center;
+        input {
+            @apply w-full m-2;
+        }
+    }
+}
+.file_list {
+    @apply flex flex-col overflow-auto overflow-x-hidden h-full;
+    span {
+        @apply flex items-center w-full cursor-pointer hover:bg-gray-700;
+        img {
+            @apply w-4 h-4 mx-2;
+        }
+    }
+}
