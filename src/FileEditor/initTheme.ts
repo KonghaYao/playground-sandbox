@@ -17,7 +17,7 @@ const extraTheme = {
         json: null,
     },
     "github-light": {
-        themeName: "GitHub Light",
+        themeName: "github-light",
         path: "https://fastly.jsdelivr.net/npm/github-vscode-themes/dist/light.json",
         json: null,
         afterFetch(json: any) {
@@ -25,7 +25,7 @@ const extraTheme = {
         },
     },
     "github-dark": {
-        themeName: "GitHub Light",
+        themeName: "github-dark",
         path: "https://fastly.jsdelivr.net/npm/github-vscode-themes/dist/dark.json",
         json: null,
         afterFetch(json: any) {
