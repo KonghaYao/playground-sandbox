@@ -1,12 +1,14 @@
-@import url("https://fastly.jsdelivr.net/npm/@fontsource/baloo-2/index.css");
+@import url("https://fastly.jsdelivr.net/npm/@fontsource/nunito/index.css");
 .sandbox {
     height: 100%;
     width: 100%;
-    font-family: "Baloo 2";
-    @apply bg-gray-800 text-white;
+    font-family: "Nunito";
+    font-weight: bold;
+
+    @apply bg-gray-800 text-gray-300;
     input {
         /* 这里需要单独设置来实现字体 */
-        font-family: "Baloo 2";
+        font-family: "Nunito";
     }
     [data-icon] {
         @apply flex items-center justify-center p-1 cursor-pointer select-none;

@@ -1,4 +1,5 @@
 import type Theme from "monaco-themes/themes/themelist.json";
+import { convertTheme } from "../utils/vscode-theme-to-monaco-theme-web";
 
 import { CDN } from "./cdn";
 type ThemeList = {
@@ -14,6 +15,22 @@ const extraTheme = {
         themeName: "github-gist",
         path: "https://fastly.jsdelivr.net/npm/@konghayao/vue-monaco-editor@1/dist/theme/githubGist.json",
         json: null,
+    },
+    "github-light": {
+        themeName: "GitHub Light",
+        path: "https://fastly.jsdelivr.net/npm/github-vscode-themes/dist/light.json",
+        json: null,
+        afterFetch(json: any) {
+            return convertTheme(json);
+        },
+    },
+    "github-dark": {
+        themeName: "GitHub Light",
+        path: "https://fastly.jsdelivr.net/npm/github-vscode-themes/dist/dark.json",
+        json: null,
+        afterFetch(json: any) {
+            return convertTheme(json, "vs-dark");
+        },
     },
 };
 
@@ -47,11 +64,19 @@ export async function initTheme() {
 }
 /** 全局使用 Theme */
 export const applyTheme = async (name: keyof AllTheme) => {
-    if (name in ThemeStore && ThemeStore[name]?.json === null) {
+    if (name in ThemeStore && !ThemeStore[name].json) {
         const { path } = ThemeStore[name];
         const json = await fetch(path, {
             cache: "force-cache",
-        }).then((res) => res.json());
+        })
+            .then((res) => res.json())
+            .then((json) => {
+                if ("afterFetch" in ThemeStore[name]) {
+                    /* @ts-ignore */
+                    return ThemeStore[name].afterFetch(json);
+                }
+                return json;
+            });
 
         monaco.editor.defineTheme(name, json);
         ThemeStore[name].json = json;
