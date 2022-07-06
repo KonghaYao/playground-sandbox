@@ -22,6 +22,7 @@ export const Previewer: Component<{
         <>
             <header class="bg-green-400">
                 <div
+                    data-icon
                     onclick={() => {
                         manager.reload();
                     }}
@@ -29,6 +30,7 @@ export const Previewer: Component<{
                     {Refresh()}
                 </div>
                 <div
+                    data-icon
                     onclick={() => {
                         fullscreen(container);
                     }}
