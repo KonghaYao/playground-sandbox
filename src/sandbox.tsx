@@ -45,7 +45,7 @@ export const Sandbox: Component<{
                             });
                         }}
                     ></FileExplorer>
-                    <div style="display:flex;flex-direction:column">
+                    <div style="display:flex;flex-direction:column;flex:1">
                         <FileEditor
                             fileList={["/index.html", "/rollup.config.web.js"]}
                             getFile={async (path) => {
