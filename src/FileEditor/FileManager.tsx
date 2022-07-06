@@ -1,28 +1,33 @@
 import { applyTheme } from "./initTheme";
 import mitt from "mitt";
 import { FileModel } from "./FileModel";
-
-// const changeLanguage = (language: string) => {
-//     const monacoEditor = getMonacoEditor();
-//     if (!monacoEditor) return;
-//     monaco.editor.setModelLanguage(monacoEditor.getModel()!, language);
-//     console.log("语言更换为 " + language);
-// };
+import { languageDetection } from "../utils/languageDetection";
 
 /* 管理 Monaco Editor 的一个类 */
 export class FileManager {
     monacoEditor!: ReturnType<typeof monaco["editor"]["create"]>;
     /* 向外发送事件的hub */
     hub = mitt<{
-        prepare: string;
-        open: string;
-        close: string;
+        prepare: { path: string; model: FileModel };
+        open: { path: string; model: FileModel };
+        close: { path: string };
         save: FileModel;
     }>();
     constructor(
         public fileStore: Map<string, FileModel>,
         public id: string | number
-    ) {}
+    ) {
+        this.hub.on("open", ({ path, model }) => {
+            languageDetection(path).then((res) => {
+                if (res) {
+                    const oldLanguage = model.model.getLanguageId();
+                    if (res !== oldLanguage) {
+                        this.changeLanguage(model.model, res);
+                    }
+                }
+            });
+        });
+    }
     mount(container: HTMLElement) {
         this.monacoEditor = monaco.editor.create(container, {
             model: null,
@@ -67,8 +72,12 @@ export class FileManager {
             const model = new FileModel();
             model.init(path, code, language);
             this.fileStore.set(path, model);
-            this.hub.emit("prepare", path);
+            this.hub.emit("prepare", { path, model });
         }
+    }
+    changeLanguage(model: FileModel["model"], language: string) {
+        monaco.editor.setModelLanguage(model, language);
+        console.log("语言更换为 " + language);
     }
     /* 打开文件，如果没有则创建，如果有则直接打开 */
     openFile(path: string, code: string = "", language = "javascript") {
@@ -79,7 +88,7 @@ export class FileManager {
             model.init(path, code, language);
             this.fileStore.set(path, model);
             this.monacoEditor.setModel(model.model);
-            this.hub.emit("open", path);
+            this.hub.emit("open", { path, model });
         }
     }
     /* 打开存在的一个文件 */
@@ -87,7 +96,7 @@ export class FileManager {
         const file = this.fileStore.get(path);
         if (file) {
             this.monacoEditor.setModel(file.model);
-            this.hub.emit("open", path);
+            this.hub.emit("open", { path, model: file });
         }
     }
     /* 关闭一个文件 */
@@ -97,7 +106,7 @@ export class FileManager {
             // old.destroy();
             // ! 注意，虽然关闭了，我们认为为了加载速度考虑，任然保留
             // this.fileStore.delete(path);
-            this.hub.emit("close", path);
+            this.hub.emit("close", { path });
         }
     }
 

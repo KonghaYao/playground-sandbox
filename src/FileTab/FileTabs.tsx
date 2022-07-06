@@ -15,14 +15,14 @@ export const FileTabs: Component<{
     const [fileList, setFileList] = createSignal(props.fileList);
     const [opening, setOpening] = createSignal(props.fileList[0]);
     const event = {
-        open(path: string) {
+        open({ path }: { path: string }) {
             const list = fileList();
             if (list.indexOf(path) === -1) {
                 setFileList([path, ...list]);
             }
             setOpening(path);
         },
-        close(path: string) {
+        close({ path }: { path: string }) {
             const list = fileList();
 
             setFileList(list.filter((item) => item !== path));

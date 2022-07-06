@@ -15,7 +15,7 @@ export class FileAPI {
                 return col.then(async (root) => {
                     const dir = root + cur + "/";
                     try {
-                        const stat = await this.fs.promises.stat(dir);
+                        await this.fs.promises.stat(dir);
                     } catch (e) {
                         await this.fs.promises.mkdir(dir);
                     }
