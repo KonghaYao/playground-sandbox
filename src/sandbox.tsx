@@ -1,5 +1,5 @@
 import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
-import { FS } from "./Helper";
+import FS from "@isomorphic-git/lightning-fs";
 import { Component, onCleanup } from "solid-js";
 import { createFileEditor } from "./FileEditor/FileEditor";
 import { FileExplorer } from "./FileExplorer";
@@ -10,10 +10,9 @@ import previewStyle from "./style/preview.module.less";
 import { FileModel } from "./FileEditor/FileModel";
 
 export const Sandbox: Component<{
-    storeTag?: string;
-}> = (props = {}) => {
-    const fs = new FS(props.storeTag || "_rollup_web_store_");
-
+    fs: FS;
+}> = (props) => {
+    const fs = props.fs;
     /* 加载文件的方式 */
     const loadFile = async (url: string) => {
         return fs.promises.readFile(url, "utf8") as Promise<string>;
@@ -22,7 +21,7 @@ export const Sandbox: Component<{
         fs.promises.writeFile(model.path, model.model.getValue());
         console.log("写入 ", model.path, "成功");
     };
-    const [FileEditor, ControllerList, controller] = createFileEditor(
+    const [FileEditor, ControllerList, watchingEditor] = createFileEditor(
         (manager) => {
             manager.hub.on("save", save);
         }
@@ -31,6 +30,7 @@ export const Sandbox: Component<{
     onCleanup(() => {
         ControllerList.forEach((manager) => manager.hub.off("save", save));
     });
+
     return (
         <>
             <sl-split-panel class={style.sandbox}>
@@ -39,7 +39,7 @@ export const Sandbox: Component<{
                         fs={fs}
                         openFile={(path) => {
                             fs.promises.readFile(path, "utf8").then((res) => {
-                                controller
+                                watchingEditor
                                     .getWatching()
                                     .openFile(path, res as any as string);
                             });
