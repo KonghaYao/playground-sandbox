@@ -1,7 +1,6 @@
 import { applyTheme } from "./initTheme";
 import mitt from "mitt";
 import { FileModel } from "./FileModel";
-import { languageDetection } from "../utils/languageDetection";
 
 /* 管理 Monaco Editor 的一个类 */
 export class FileManager {
@@ -16,18 +15,7 @@ export class FileManager {
     constructor(
         public fileStore: Map<string, FileModel>,
         public id: string | number
-    ) {
-        this.hub.on("open", ({ path, model }) => {
-            languageDetection(path).then((res) => {
-                if (res) {
-                    const oldLanguage = model.model.getLanguageId();
-                    if (res !== oldLanguage) {
-                        this.changeLanguage(model.model, res);
-                    }
-                }
-            });
-        });
-    }
+    ) {}
     mount(container: HTMLElement) {
         this.monacoEditor = monaco.editor.create(container, {
             model: null,
@@ -67,25 +55,22 @@ export class FileManager {
     }
 
     /* 提前准备文件，但是不进行展示 */
-    prepareFile(path: string, code = "", language = "javascript") {
+    prepareFile(path: string, code = "") {
         if (!this.fileStore.has(path)) {
             const model = new FileModel();
-            model.init(path, code, language);
+            model.init(path, code);
             this.fileStore.set(path, model);
             this.hub.emit("prepare", { path, model });
         }
     }
-    changeLanguage(model: FileModel["model"], language: string) {
-        monaco.editor.setModelLanguage(model, language);
-        console.log("语言更换为 " + language);
-    }
+
     /* 打开文件，如果没有则创建，如果有则直接打开 */
-    openFile(path: string, code: string = "", language = "javascript") {
+    openFile(path: string, code: string = "") {
         if (this.fileStore.has(path)) {
             this.openExistFile(path);
         } else {
             const model = new FileModel();
-            model.init(path, code, language);
+            model.init(path, code);
             this.fileStore.set(path, model);
             this.monacoEditor.setModel(model.model);
             this.hub.emit("open", { path, model });
