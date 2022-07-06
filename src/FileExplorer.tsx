@@ -9,7 +9,7 @@ type Props = {
     initPath?: string;
 };
 
-/* 文件浏览器 */
+/* 文件浏览器组件 */
 export const FileExplorer: Component<Props> = (props) => {
     const initPath = props.initPath || "/";
     const [path, setPath] = createSignal(initPath);

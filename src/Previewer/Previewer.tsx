@@ -1,5 +1,6 @@
 import { Component, onCleanup, onMount } from "solid-js";
-import { Refresh } from "../Icon";
+import { Refresh, ScreenFull } from "../Icon";
+import { fullscreen } from "../utils/fullscreen";
 import { CompilerManager, IframeFactory, LoadFile } from "./IframeFactory";
 /* 用于承载 Iframe */
 export const Previewer: Component<{
@@ -26,6 +27,13 @@ export const Previewer: Component<{
                     }}
                 >
                     {Refresh()}
+                </div>
+                <div
+                    onclick={() => {
+                        fullscreen(container);
+                    }}
+                >
+                    {ScreenFull()}
                 </div>
                 <input type="text"></input>
             </header>

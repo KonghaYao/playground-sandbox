@@ -3,7 +3,7 @@ import _FS from "@isomorphic-git/lightning-fs";
 type TreeObject = {
     [ket: string]: TreeObject | string;
 };
-/* 不建议用户直接使用 FS，使用我们提供的 API 接口较好 */
+/* 向外部导出的 API */
 export class FileAPI {
     constructor(public fs: _FS) {}
     /* 安全地创建深层文件夹并给出文件 */
