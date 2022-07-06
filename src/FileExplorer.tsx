@@ -27,7 +27,9 @@ export const FileExplorer: Component<Props> = (props) => {
     return (
         <nav class={style.file_explorer}>
             <header>
-                <div onclick={back}>{Left()}</div>
+                <div onclick={back} data-icon>
+                    {Left()}
+                </div>
                 <input type="text" value={path()} />
             </header>
             <div class={style.file_list}>

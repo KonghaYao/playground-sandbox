@@ -37,7 +37,6 @@ export const Previewer: Component<{
                 >
                     {ScreenFull()}
                 </div>
-                <input type="text"></input>
             </header>
             <main class="iframe-container" ref={container!}></main>
         </>
