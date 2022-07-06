@@ -1,4 +1,4 @@
-import { Evaluator, IframeEnv } from "./Helper";
+import { Evaluator, IframeEnv } from "../Helper";
 export type LoadFile = (string: string) => Promise<string>;
 
 type Config = { target?: string; compiler?: { url?: string } };

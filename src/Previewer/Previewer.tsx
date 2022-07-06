@@ -1,5 +1,5 @@
 import { Component, onCleanup, onMount } from "solid-js";
-import { Refresh } from "./Icon";
+import { Refresh } from "../Icon";
 import { CompilerManager, IframeFactory, LoadFile } from "./IframeFactory";
 /* 用于承载 Iframe */
 export const Previewer: Component<{

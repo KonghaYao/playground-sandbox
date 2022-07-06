@@ -3,7 +3,7 @@ import FS from "@isomorphic-git/lightning-fs";
 import { Component, createSignal, For, onCleanup } from "solid-js";
 import { createFileEditor } from "./FileEditor/FileEditor";
 import { FileExplorer } from "./FileExplorer";
-import { Previewer } from "./Previewer";
+import { Previewer } from "./Previewer/Previewer";
 import style from "./sandbox.module.less";
 import previewStyle from "./style/preview.module.less";
 import { FileModel } from "./FileEditor/FileModel";
