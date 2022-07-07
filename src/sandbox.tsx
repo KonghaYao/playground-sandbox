@@ -13,8 +13,11 @@ export type SandboxInput = {
     files: string[][];
 };
 type Expose = {
-    watchingEditor: any;
+    watchingEditor: WatchingEditor;
 };
+
+type WatchingEditor = ReturnType<typeof createFileEditor>[2];
+
 const FileEditorList: Component<{
     files: string[][];
     fs: FS;
@@ -78,7 +81,7 @@ export const Sandbox: Component<SandboxInput> = (props) => {
     const loadFile = async (url: string) => {
         return props.fs.promises.readFile(url, "utf8") as Promise<string>;
     };
-    let watchingEditor: any;
+    let watchingEditor: WatchingEditor;
     const [ExplorerVisible, setExplorerVisible] = createSignal(false);
     return (
         <>
