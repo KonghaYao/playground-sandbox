@@ -21,7 +21,14 @@ export const FileTab: Component<{
             <img height="1em" width="1em" src={src} alt="" />
 
             <span>{props.name}</span>
-            <div onclick={() => props.onclose()}>{Close()}</div>
+            <div
+                onclick={(e) => {
+                    e.cancelBubble = true;
+                    props.onclose();
+                }}
+            >
+                {Close()}
+            </div>
         </div>
     );
 };
