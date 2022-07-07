@@ -7,6 +7,7 @@ import { Previewer } from "./Previewer/Previewer";
 import style from "./sandbox.module.less";
 import previewStyle from "./style/preview.module.less";
 import { FileModel } from "./FileEditor/FileModel";
+import { ClearAll } from "./Icon";
 export type SandboxInput = {
     fs: FS;
     files: string[][];
@@ -18,6 +19,7 @@ const FileEditorList: Component<{
     files: string[][];
     fs: FS;
     expose: (data: Expose) => void;
+    toggleExplorer: Function;
 }> = (props) => {
     const fs = props.fs;
     const [fileList, setFileList] = createSignal(props.files);
@@ -44,6 +46,9 @@ const FileEditorList: Component<{
     return (
         <div class={style.editor_list}>
             <header class={style.editor_header}>
+                <span data-icon onclick={() => props.toggleExplorer()}>
+                    {ClearAll()}
+                </span>
                 <div>File Editor</div>
                 <span></span>
             </header>
@@ -74,11 +79,13 @@ export const Sandbox: Component<SandboxInput> = (props) => {
         return props.fs.promises.readFile(url, "utf8") as Promise<string>;
     };
     let watchingEditor: any;
+    const [ExplorerVisible, setExplorerVisible] = createSignal(false);
     return (
         <>
             <sl-split-panel class={style.sandbox}>
                 <div class={style.file_box} slot="start">
                     <FileExplorer
+                        visible={ExplorerVisible}
                         fs={props.fs}
                         openFile={(path) => {
                             props.fs.promises
@@ -91,6 +98,10 @@ export const Sandbox: Component<SandboxInput> = (props) => {
                         }}
                     ></FileExplorer>
                     <FileEditorList
+                        toggleExplorer={() => {
+                            setExplorerVisible(!ExplorerVisible());
+                            console.log(ExplorerVisible());
+                        }}
                         fs={props.fs}
                         files={props.files}
                         expose={(data) => {

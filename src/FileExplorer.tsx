@@ -7,6 +7,7 @@ type Props = {
     fs: FS;
     openFile: (path: string) => void;
     initPath?: string;
+    visible: Accessor<boolean>;
 };
 
 /* 文件浏览器组件 */
@@ -25,7 +26,10 @@ export const FileExplorer: Component<Props> = (props) => {
     );
     jumpTo(initPath);
     return (
-        <nav class={style.file_explorer}>
+        <nav
+            class={style.file_explorer}
+            style={{ display: props.visible() ? "block" : "none" }}
+        >
             <header>
                 <div onclick={back} data-icon>
                     {Left()}
