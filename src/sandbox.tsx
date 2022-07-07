@@ -73,7 +73,11 @@ const FileEditorList: Component<{
                                 const newList = fileList().filter(
                                     (i) => !Object.is(i, el)
                                 );
-                                setFileList(newList);
+                                if (newList.length === 0) {
+                                    setFileList([[]]);
+                                } else {
+                                    setFileList(newList);
+                                }
                             }}
                         ></FileEditor>
                     );

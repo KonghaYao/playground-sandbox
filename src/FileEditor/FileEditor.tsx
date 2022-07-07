@@ -28,28 +28,24 @@ const FileEditorInstance: (
         });
     });
     return (
-        <Switch fallback={<nav class={style.file_editor}>PleaseOpenAFile</nav>}>
-            <Match when={props.fileList.length}>
-                <nav class={style.file_editor}>
-                    <FileTabs
-                        fileList={props.fileList}
-                        hub={controller.hub}
-                        onselect={(i) => {
-                            controller.openFile(i);
-                        }}
-                        onclose={(i) => {
-                            controller.closeFile(i);
-                        }}
-                        closeSelf={props.closeSelf}
-                    ></FileTabs>
-                    <div
-                        data-class="editor"
-                        onclick={onWatch}
-                        ref={(el: HTMLDivElement) => controller.mount(el)}
-                    ></div>
-                </nav>
-            </Match>
-        </Switch>
+        <nav class={style.file_editor}>
+            <FileTabs
+                fileList={props.fileList}
+                hub={controller.hub}
+                onselect={(i) => {
+                    controller.openFile(i);
+                }}
+                onclose={(i) => {
+                    controller.closeFile(i);
+                }}
+                closeSelf={props.closeSelf}
+            ></FileTabs>
+            <div
+                data-class="editor"
+                onclick={onWatch}
+                ref={(el: HTMLDivElement) => controller.mount(el)}
+            ></div>
+        </nav>
     );
 };
 
