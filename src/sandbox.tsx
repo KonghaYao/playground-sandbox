@@ -7,7 +7,7 @@ import { Previewer } from "./Previewer/Previewer";
 import style from "./sandbox.module.less";
 import previewStyle from "./style/preview.module.less";
 import { FileModel } from "./FileEditor/FileModel";
-import { LayoutSidebarLeft, SplitHorizontal } from "./Icon";
+import { LayoutSidebarLeft, SplitHorizontal } from "./Helpers/Icon";
 export type SandboxInput = {
     fs: FS;
     files: string[][];
@@ -73,6 +73,7 @@ const FileEditorList: Component<{
                                 const newList = fileList().filter(
                                     (i) => !Object.is(i, el)
                                 );
+                                // 删除保护，防止没有的事件
                                 if (newList.length === 0) {
                                     setFileList([[]]);
                                 } else {

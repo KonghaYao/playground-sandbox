@@ -1,6 +1,6 @@
 import { render } from "solid-js/web";
 import { Sandbox, SandboxInput } from "./sandbox";
-import { FS } from "./Helper";
+import { FS } from "./Helpers/Helper";
 export { FS };
 import { FileAPI } from "./FileAPI";
 

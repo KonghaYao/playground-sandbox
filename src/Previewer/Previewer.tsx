@@ -1,5 +1,5 @@
 import { Component, onCleanup, onMount } from "solid-js";
-import { Refresh, ScreenFull } from "../Icon";
+import { Refresh, ScreenFull } from "../Helpers/Icon";
 import { fullscreen } from "../utils/fullscreen";
 import { CompilerManager, IframeFactory, LoadFile } from "./IframeFactory";
 /* 用于承载 Iframe */

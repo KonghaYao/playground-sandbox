@@ -5,8 +5,8 @@ createSandbox(
     {
         files: [
             ["/index.html", "/rollup.config.web.js"],
-            ["/index.html", "/rollup.config.web.js"],
-            ["/index.html", "/rollup.config.web.js"],
+            ["/rollup.config.web.js"],
+            [],
         ],
     },
     {

@@ -1,6 +1,15 @@
-import { Component, lazy, Match, onMount, Suspense, Switch } from "solid-js";
+import {
+    Component,
+    createMemo,
+    lazy,
+    Match,
+    onMount,
+    Suspense,
+    Switch,
+} from "solid-js";
 import { getMonaco } from "./getMonaco";
 import style from "./FileEditor.module.less";
+import { Info } from "../Helpers/Info";
 import { initTheme } from "./initTheme";
 type Props = {
     fileList: string[];
@@ -27,8 +36,10 @@ const FileEditorInstance: (
             if (list.length) controller.openExistFile(props.fileList[0]);
         });
     });
+
     return (
         <nav class={style.file_editor}>
+            {/* ! 注意 props.fileList 没有办法被响应式监控，所以没有写空组件 */}
             <FileTabs
                 fileList={props.fileList}
                 hub={controller.hub}
@@ -82,10 +93,9 @@ export const createFileEditor = (
             };
         });
         return (
-            <Suspense
-                fallback={<div>Loading</div>}
-                children={[<Instance {...props}></Instance>]}
-            ></Suspense>
+            <Suspense fallback={<Info>Loading</Info>}>
+                <Instance {...props}></Instance>
+            </Suspense>
         );
     };
     /**

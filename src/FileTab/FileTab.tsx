@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
 import { getIconForFile } from "vscode-icons-js";
-import { Close } from "../Icon";
+import { Close } from "../Helpers/Icon";
 import style from "./FileTabs.module.less";
 export const FileTab: Component<{
     name: string;

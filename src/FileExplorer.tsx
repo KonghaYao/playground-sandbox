@@ -1,7 +1,7 @@
 import { Accessor, Component, createSignal, For, Setter } from "solid-js";
 import { getIconForFile, getIconForFolder } from "vscode-icons-js";
 import type FS from "@isomorphic-git/lightning-fs";
-import { Left } from "./Icon";
+import { Left } from "./Helpers/Icon";
 import style from "./style/explorer.module.less";
 type Props = {
     fs: FS;
