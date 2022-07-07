@@ -1,93 +1,15 @@
 import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
 import FS from "@isomorphic-git/lightning-fs";
-import { Component, createSignal, For, onCleanup } from "solid-js";
-import { createFileEditor } from "./FileEditor/FileEditor";
+import { Component, createSignal } from "solid-js";
 import { FileExplorer } from "./FileExplorer";
 import { Previewer } from "./Previewer/Previewer";
 import style from "./sandbox.module.less";
 import previewStyle from "./style/preview.module.less";
-import { FileModel } from "./FileEditor/FileModel";
-import { LayoutSidebarLeft, SplitHorizontal } from "./Helpers/Icon";
+import { WatchingEditor, FileEditorList } from "./FileEditor/FileExidtorList";
 export type SandboxInput = {
     fs: FS;
     files: string[][];
 };
-type Expose = {
-    watchingEditor: WatchingEditor;
-};
-
-type WatchingEditor = ReturnType<typeof createFileEditor>[2];
-
-const FileEditorList: Component<{
-    files: string[][];
-    fs: FS;
-    expose: (data: Expose) => void;
-    toggleExplorer: Function;
-}> = (props) => {
-    const fs = props.fs;
-    const [fileList, setFileList] = createSignal(props.files);
-    const save = (model: FileModel) => {
-        fs.promises.writeFile(model.path, model.model.getValue());
-        console.log("写入 ", model.path, "成功");
-    };
-    const getFile = async (path: string) => {
-        const code = (await fs.promises.readFile(
-            path,
-            "utf8"
-        )) as any as string;
-        return { code };
-    };
-    const [FileEditor, ControllerList, watchingEditor] = createFileEditor(
-        (manager) => {
-            manager.hub.on("save", save);
-        }
-    );
-    props.expose({ watchingEditor });
-    onCleanup(() => {
-        ControllerList.forEach((manager) => manager.hub.off("save", save));
-    });
-    return (
-        <div class={style.editor_list}>
-            <header class={style.editor_header}>
-                <span data-icon onclick={() => props.toggleExplorer()}>
-                    {LayoutSidebarLeft()}
-                </span>
-                <div>File Editor</div>
-                <span
-                    data-icon
-                    onclick={() => {
-                        setFileList([...fileList(), []]);
-                    }}
-                >
-                    {SplitHorizontal()}
-                </span>
-            </header>
-            {/* 使用循环遍历构建多个 Editor */}
-            <For each={fileList()}>
-                {(el) => {
-                    return (
-                        <FileEditor
-                            fileList={el}
-                            getFile={getFile}
-                            closeSelf={() => {
-                                const newList = fileList().filter(
-                                    (i) => !Object.is(i, el)
-                                );
-                                // 删除保护，防止没有的事件
-                                if (newList.length === 0) {
-                                    setFileList([[]]);
-                                } else {
-                                    setFileList(newList);
-                                }
-                            }}
-                        ></FileEditor>
-                    );
-                }}
-            </For>
-        </div>
-    );
-};
-
 export const Sandbox: Component<SandboxInput> = (props) => {
     /* 加载文件的方式 */
     const loadFile = async (url: string) => {

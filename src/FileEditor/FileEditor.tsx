@@ -1,12 +1,4 @@
-import {
-    Component,
-    createMemo,
-    lazy,
-    Match,
-    onMount,
-    Suspense,
-    Switch,
-} from "solid-js";
+import { Component, lazy, onMount, Suspense } from "solid-js";
 import { getMonaco } from "./getMonaco";
 import style from "./FileEditor.module.less";
 import { Info } from "../Helpers/Info";
@@ -21,44 +13,47 @@ import { FileTabs } from "../FileTab/FileTabs";
 import { FileManager } from "./FileManager";
 import { FileModel } from "./FileModel";
 
-/* 文件浏览器 */
-const FileEditorInstance: (
+type FileEditorInstanceType = (
     controller: FileManager,
     onWatch: (e: Event) => void
-) => Component<Props> = (controller, onWatch) => (props) => {
-    onMount(() => {
-        // fileList 是初始化参数，并非响应式
-        const promises = props.fileList.map(async (path) => {
-            const { code } = await props.getFile(path);
-            return controller.prepareFile(path, code);
-        });
-        Promise.all(promises).then((list) => {
-            if (list.length) controller.openExistFile(props.fileList[0]);
-        });
-    });
+) => Component<Props>;
 
-    return (
-        <nav class={style.file_editor}>
-            {/* ! 注意 props.fileList 没有办法被响应式监控，所以没有写空组件 */}
-            <FileTabs
-                fileList={props.fileList}
-                hub={controller.hub}
-                onselect={(i) => {
-                    controller.openFile(i);
-                }}
-                onclose={(i) => {
-                    controller.closeFile(i);
-                }}
-                closeSelf={props.closeSelf}
-            ></FileTabs>
-            <div
-                data-class="editor"
-                onclick={onWatch}
-                ref={(el: HTMLDivElement) => controller.mount(el)}
-            ></div>
-        </nav>
-    );
-};
+/* 文件浏览器 */
+const FileEditorInstance: FileEditorInstanceType =
+    (controller, onWatch) => (props) => {
+        onMount(() => {
+            // fileList 是初始化参数，并非响应式
+            const promises = props.fileList.map(async (path) => {
+                const { code } = await props.getFile(path);
+                return controller.prepareFile(path, code);
+            });
+            Promise.all(promises).then((list) => {
+                if (list.length) controller.openExistFile(props.fileList[0]);
+            });
+        });
+
+        return (
+            <nav class={style.file_editor}>
+                {/* ! 注意 props.fileList 没有办法被响应式监控，所以没有写空组件 */}
+                <FileTabs
+                    fileList={props.fileList}
+                    hub={controller.hub}
+                    onselect={(i) => {
+                        controller.openFile(i);
+                    }}
+                    onclose={(i) => {
+                        controller.closeFile(i);
+                    }}
+                    closeSelf={props.closeSelf}
+                ></FileTabs>
+                <div
+                    data-class="editor"
+                    onclick={onWatch}
+                    ref={(el: HTMLDivElement) => controller.mount(el)}
+                ></div>
+            </nav>
+        );
+    };
 
 /**
  * 统一的文件编辑器的创建函数
