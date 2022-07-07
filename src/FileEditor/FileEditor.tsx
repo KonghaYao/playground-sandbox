@@ -1,4 +1,4 @@
-import { Component, lazy, onMount, Suspense } from "solid-js";
+import { Component, lazy, Match, onMount, Suspense, Switch } from "solid-js";
 import { getMonaco } from "./getMonaco";
 import style from "./FileEditor.module.less";
 import { initTheme } from "./initTheme";
@@ -23,31 +23,33 @@ const FileEditorInstance: (
             const { code } = await props.getFile(path);
             return controller.prepareFile(path, code);
         });
-        Promise.all(promises).then(() => {
-            controller.openExistFile(props.fileList[0]);
+        Promise.all(promises).then((list) => {
+            if (list.length) controller.openExistFile(props.fileList[0]);
         });
     });
     return (
-        <>
-            <nav class={style.file_editor}>
-                <FileTabs
-                    fileList={props.fileList}
-                    hub={controller.hub}
-                    onselect={(i) => {
-                        controller.openFile(i);
-                    }}
-                    onclose={(i) => {
-                        controller.closeFile(i);
-                    }}
-                    closeSelf={props.closeSelf}
-                ></FileTabs>
-                <div
-                    data-class="editor"
-                    onclick={onWatch}
-                    ref={(el: HTMLDivElement) => controller.mount(el)}
-                ></div>
-            </nav>
-        </>
+        <Switch fallback={<nav class={style.file_editor}>PleaseOpenAFile</nav>}>
+            <Match when={props.fileList.length}>
+                <nav class={style.file_editor}>
+                    <FileTabs
+                        fileList={props.fileList}
+                        hub={controller.hub}
+                        onselect={(i) => {
+                            controller.openFile(i);
+                        }}
+                        onclose={(i) => {
+                            controller.closeFile(i);
+                        }}
+                        closeSelf={props.closeSelf}
+                    ></FileTabs>
+                    <div
+                        data-class="editor"
+                        onclick={onWatch}
+                        ref={(el: HTMLDivElement) => controller.mount(el)}
+                    ></div>
+                </nav>
+            </Match>
+        </Switch>
     );
 };
 

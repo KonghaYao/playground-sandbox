@@ -7,7 +7,7 @@ import { Previewer } from "./Previewer/Previewer";
 import style from "./sandbox.module.less";
 import previewStyle from "./style/preview.module.less";
 import { FileModel } from "./FileEditor/FileModel";
-import { ClearAll } from "./Icon";
+import { LayoutSidebarLeft, SplitHorizontal } from "./Icon";
 export type SandboxInput = {
     fs: FS;
     files: string[][];
@@ -50,10 +50,17 @@ const FileEditorList: Component<{
         <div class={style.editor_list}>
             <header class={style.editor_header}>
                 <span data-icon onclick={() => props.toggleExplorer()}>
-                    {ClearAll()}
+                    {LayoutSidebarLeft()}
                 </span>
                 <div>File Editor</div>
-                <span></span>
+                <span
+                    data-icon
+                    onclick={() => {
+                        setFileList([...fileList(), []]);
+                    }}
+                >
+                    {SplitHorizontal()}
+                </span>
             </header>
             {/* 使用循环遍历构建多个 Editor */}
             <For each={fileList()}>
