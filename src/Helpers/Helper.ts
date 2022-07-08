@@ -5,4 +5,4 @@ export const FS: typeof A = _FS;
 /* @ts-ignore */
 export { IframeEnv } from "rollup-web/dist/Iframe.js";
 /* @ts-ignore */
-export { Evaluator } from "rollup-web/dist/index.js";
+export { Evaluator, loadScript } from "rollup-web/dist/index.js";
