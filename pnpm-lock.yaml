@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@babel/core': ^7.18.6
   '@babel/preset-typescript': ^7.18.6
+  '@codingame/monaco-editor': ^0.33.7
   '@codingame/monaco-editor-wrapper': ^1.15.0
   '@isomorphic-git/lightning-fs': ^4.6.0
   '@monaco-editor/loader': ^1.3.2
@@ -54,6 +55,7 @@ dependencies:
 devDependencies:
   '@babel/core': 7.18.6
   '@babel/preset-typescript': 7.18.6_@babel+core@7.18.6
+  '@codingame/monaco-editor': 0.33.7
   '@rollup/plugin-alias': 3.1.9_rollup@2.75.7
   '@rollup/plugin-commonjs': 22.0.1_rollup@2.75.7
   '@rollup/plugin-node-resolve': 13.3.0_rollup@2.75.7
@@ -395,7 +397,6 @@ packages:
 
   /@codingame/monaco-editor/0.33.7:
     resolution: {integrity: sha512-4nsW5GVTuqPD042sJNWzwJnlHtvxjmvs80GiGZtA+133pvABWRgQn9VP1pqnCbRxuY2DwqIBgYpRkuMoEdjVaQ==}
-    dev: false
 
   /@csstools/postcss-cascade-layers/1.0.4_postcss@8.4.14:
     resolution: {integrity: sha512-zP2tQIFu4C3HueOT+G4Pkla7f2Z6pfXphc1Y9wDE5jS2Ss6dk/asQ7FFEFWKgy3EkYc7E1FSjzhfeZVGg5sjXQ==}
