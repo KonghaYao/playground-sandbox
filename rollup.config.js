@@ -41,11 +41,24 @@ export default {
                     return false;
                 }
             },
+            transform(code, id) {
+                if (id.includes("monaco-editor-wrapper")) {
+                    return code.replace(/(\* as monaco)/, "monaco");
+                }
+            },
             load(id) {
                 if (id.endsWith("onig.wasm")) {
                     return `
                     const a ='https://cdn.jsdelivr.net/npm/vscode-oniguruma/release/onig.wasm'
                     export default a`;
+                }
+                if (id.includes("monaco-editor\\esm")) {
+                    if (id.includes("shiftCommand")) {
+                        console.log(id);
+                        return "export * from 'https://cdn.jsdelivr.net/npm/@codingame/monaco-editor/esm/vs/editor/common/commands/shiftCommand.js' ";
+                    } else {
+                        return "export default globalThis.monaco";
+                    }
                 }
             },
         },
@@ -81,17 +94,17 @@ export default {
                         : "./rollup-web",
                 },
 
-                {
-                    find: /^(monaco-editor.*)/,
-                    replacement: "$1.js",
-                    customResolver(thiFile, importer) {
-                        console.log(thiFile);
-                        return {
-                            external: true,
-                            id: `https://esm.run/${thiFile}`,
-                        };
-                    },
-                },
+                // {
+                //     find: /^(monaco-editor.*)/,
+                //     replacement: "$1.js",
+                //     customResolver(thiFile, importer) {
+                //         console.log(thiFile);
+                //         return {
+                //             external: true,
+                //             id: `https://fastly.jsdelivr.net/npm/@codingame/${thiFile}/+esm`,
+                //         };
+                //     },
+                // },
             ],
         }),
         nodeResolve({

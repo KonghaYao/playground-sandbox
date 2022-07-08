@@ -2,7 +2,6 @@ import { Component, lazy, onMount, Suspense } from "solid-js";
 import { getMonaco } from "./getMonaco";
 import style from "./FileEditor.module.less";
 import { Info } from "../Helpers/Info";
-import { initTheme } from "./initTheme";
 type Props = {
     fileList: string[];
     getFile(path: string): Promise<{ code: string; language?: string }>;
@@ -80,7 +79,6 @@ export const createFileEditor = (
             controllers.push(manager);
             init && (await init(manager));
             await getMonaco();
-            await initTheme();
             return {
                 default: FileEditorInstance(manager, () => {
                     info.watchingIndex = id;

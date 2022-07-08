@@ -20,13 +20,14 @@ export class FileManager {
     mount(container: HTMLElement) {
         this.monacoEditor = wrapper.createEditor(container, {
             model: null,
-            theme: "github-gist",
+            // theme: "github-gist",
             autoIndent: "advanced",
             automaticLayout: true,
             fontFamily: "Consolas",
             fontSize: 16,
             minimap: { enabled: false },
         });
+
         const save = () => {
             const model = this.monacoEditor.getModel();
             if (model) {
