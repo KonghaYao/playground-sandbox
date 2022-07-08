@@ -35,8 +35,9 @@ export const Sandbox: Component<SandboxInput> = (props) => {
                         }}
                     ></FileExplorer>
                     <FileEditorList
-                        toggleExplorer={() => {
-                            setExplorerVisible(!ExplorerVisible());
+                        toggleExplorer={(bool?: boolean) => {
+                            if (bool === undefined) bool = !ExplorerVisible();
+                            setExplorerVisible(bool);
                             console.log(ExplorerVisible());
                         }}
                         fs={props.fs}

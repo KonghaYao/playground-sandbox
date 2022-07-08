@@ -1,4 +1,4 @@
-import { Component, createSignal, onCleanup } from "solid-js";
+import { Component, createSignal, JSX, JSXElement, onCleanup } from "solid-js";
 import { For } from "solid-js/web";
 import style from "./FileTabs.module.less";
 
@@ -9,6 +9,7 @@ export const FileTabs: Component<{
     fileList: string[];
     onselect: (i: string) => void;
     onclose: (i: string) => void;
+    Void: JSXElement;
     hub: FileManager["hub"];
     closeSelf: Function;
 }> = (props) => {
@@ -38,7 +39,7 @@ export const FileTabs: Component<{
     return (
         <>
             <div class={style.file_tabs}>
-                <For each={fileList()}>
+                <For each={fileList()} fallback={props.Void}>
                     {(i) => {
                         const tabName = i.replace(/^.*?([^\/]+)$/, "$1");
                         return (

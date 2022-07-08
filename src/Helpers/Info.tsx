@@ -1,9 +1,11 @@
 import { Component, JSXElement } from "solid-js";
 export const Info: Component<{
     children: JSXElement;
+    class?: string;
 }> = (props) => {
     return (
         <div
+            class={props.class}
             style={{
                 position: "absolute",
                 top: 0,

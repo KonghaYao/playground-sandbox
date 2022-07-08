@@ -6,6 +6,7 @@ type Props = {
     fileList: string[];
     getFile(path: string): Promise<{ code: string; language?: string }>;
     closeSelf(): void;
+    requestSelect(): void;
 };
 
 import { FileTabs } from "../FileTab/FileTabs";
@@ -35,6 +36,19 @@ const FileEditorInstance: FileEditorInstanceType =
             <nav class={style.file_editor}>
                 {/* ! 注意 props.fileList 没有办法被响应式监控，所以没有写空组件 */}
                 <FileTabs
+                    Void={
+                        <Info class={style.void}>
+                            <p>q(≧▽≦q)</p>
+                            <div>
+                                <span data-button onclick={props.closeSelf}>
+                                    Close Editor
+                                </span>
+                                <span data-button onclick={props.requestSelect}>
+                                    Open File
+                                </span>
+                            </div>
+                        </Info>
+                    }
                     fileList={props.fileList}
                     hub={controller.hub}
                     onselect={(i) => {
@@ -89,7 +103,7 @@ export const createFileEditor = (
             <Suspense
                 fallback={
                     <div style={{ position: "relative" }}>
-                        <Info>Loading</Info>
+                        <Info>Loading...</Info>
                     </div>
                 }
             >

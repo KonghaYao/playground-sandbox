@@ -1,7 +1,7 @@
 import FS from "@isomorphic-git/lightning-fs";
 import { Component, createSignal, For, onCleanup } from "solid-js";
 import { createFileEditor } from "./FileEditor";
-import style from "../sandbox.module.less";
+import style from "./FileEditor.module.less";
 import { FileModel } from "./FileModel";
 import { LayoutSidebarLeft, SplitHorizontal } from "../Helpers/Icon";
 
@@ -58,6 +58,9 @@ export const FileEditorList: Component<{
                 {(el) => {
                     return (
                         <FileEditor
+                            requestSelect={() => {
+                                props.toggleExplorer(true);
+                            }}
                             fileList={el}
                             getFile={getFile}
                             closeSelf={() => {
