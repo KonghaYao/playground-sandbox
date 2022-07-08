@@ -29,6 +29,9 @@ export const getMonaco = async () => {
         "@codingame/monaco-editor-wrapper/dist/features/typescriptContribution"
     );
     await import(
+        "@codingame/monaco-editor-wrapper/dist/features/cssContribution"
+    );
+    await import(
         "@codingame/monaco-editor-wrapper/dist/features/extensionConfigurations"
     );
     /* @ts-ignore*/

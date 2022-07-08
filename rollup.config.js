@@ -1,12 +1,13 @@
 import alias from "@rollup/plugin-alias";
 import babel from "@rollup/plugin-babel";
 import nodeResolve from "@rollup/plugin-node-resolve";
-import fs, { writeFileSync } from "fs";
+import fs, { writeFileSync } from "fs-extra";
 import postcss from "rollup-plugin-postcss";
 import commonjs from "@rollup/plugin-commonjs";
 // import { terser } from "rollup-plugin-terser";
 import analyze from "rollup-plugin-analyzer";
 import path from "path";
+fs.emptyDir("./dist/");
 // rollup.config.js
 export default {
     external: [
@@ -15,7 +16,6 @@ export default {
         "solid-js/web",
         "@monaco-editor/loader",
         "monaco-editor",
-        // "vscode-oniguruma",
     ],
     input: "./test/index.ts",
     output: {
@@ -43,6 +43,7 @@ export default {
             },
             transform(code, id) {
                 if (id.includes("monaco-editor-wrapper")) {
+                    //! 将 * as monaco 导入转化为 default 导入，这样可以获取为 全局的 monaco
                     return code.replace(/(\* as monaco)/, "monaco");
                 }
             },
@@ -64,7 +65,7 @@ export default {
         },
         {
             resolveDynamicImport(thisFile, importer) {
-                // 将里面的动态导入全部导向 cdn
+                // 将里面的动态导入全部导向 cdn, 主要是一些语言文件
                 if (
                     importer.endsWith(
                         path.join(
@@ -93,18 +94,6 @@ export default {
                         ? "https://cdn.jsdelivr.net/npm/rollup-web"
                         : "./rollup-web",
                 },
-
-                // {
-                //     find: /^(monaco-editor.*)/,
-                //     replacement: "$1.js",
-                //     customResolver(thiFile, importer) {
-                //         console.log(thiFile);
-                //         return {
-                //             external: true,
-                //             id: `https://fastly.jsdelivr.net/npm/@codingame/${thiFile}/+esm`,
-                //         };
-                //     },
-                // },
             ],
         }),
         nodeResolve({

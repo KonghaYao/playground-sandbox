@@ -46,7 +46,7 @@ export class FileManager {
             monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
             save
         );
-        // applyTheme("github-gist");
+        // applyTheme("github-light");
     }
     /* 根据 Model 查找 FileModel */
     findFileCache(model: FileModel["model"]) {
