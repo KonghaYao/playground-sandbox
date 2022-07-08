@@ -6,6 +6,7 @@ import postcss from "rollup-plugin-postcss";
 import commonjs from "@rollup/plugin-commonjs";
 // import { terser } from "rollup-plugin-terser";
 import analyze from "rollup-plugin-analyzer";
+import path from "path";
 // rollup.config.js
 export default {
     external: [
@@ -13,10 +14,12 @@ export default {
         "solid-js",
         "solid-js/web",
         "@monaco-editor/loader",
+        "monaco-editor",
+        // "vscode-oniguruma",
     ],
     input: "./test/index.ts",
     output: {
-        file: "./dist/test.js",
+        dir: "./dist/",
         format: "es",
         paths: {
             // 这个库 40k
@@ -27,12 +30,45 @@ export default {
             "@monaco-editor/loader":
                 "https://cdn.skypack.dev/@monaco-editor/loader",
         },
+        globals: {
+            "vscode-oniguruma": "onig",
+        },
     },
     plugins: [
         {
             resolveId(thisFile) {
                 if (thisFile.startsWith("https://")) {
                     return false;
+                }
+            },
+            load(id) {
+                if (id.endsWith("onig.wasm")) {
+                    return `
+                    const a ='https://cdn.jsdelivr.net/npm/vscode-oniguruma/release/onig.wasm'
+                    export default a`;
+                }
+            },
+        },
+        {
+            resolveDynamicImport(thisFile, importer) {
+                // 将里面的动态导入全部导向 cdn
+                if (
+                    importer.endsWith(
+                        path.join(
+                            "@codingame",
+                            "monaco-editor-wrapper",
+                            "dist",
+                            "main.js"
+                        )
+                    )
+                ) {
+                    return {
+                        external: true,
+                        id: new URL(
+                            thisFile,
+                            "https://cdn.jsdelivr.net/npm/@codingame/monaco-editor-wrapper/dist/main.js"
+                        ).toString(),
+                    };
                 }
             },
         },
@@ -43,6 +79,18 @@ export default {
                     replacement: true
                         ? "https://cdn.jsdelivr.net/npm/rollup-web"
                         : "./rollup-web",
+                },
+
+                {
+                    find: /^(monaco-editor.*)/,
+                    replacement: "$1.js",
+                    customResolver(thiFile, importer) {
+                        console.log(thiFile);
+                        return {
+                            external: true,
+                            id: `https://esm.run/${thiFile}`,
+                        };
+                    },
                 },
             ],
         }),

@@ -1,10 +1,11 @@
 import { applyTheme } from "./initTheme";
 import mitt from "mitt";
 import { FileModel } from "./FileModel";
+import { wrapper } from "./getMonaco";
 
 /* 管理 Monaco Editor 的一个类 */
 export class FileManager {
-    monacoEditor!: ReturnType<typeof monaco["editor"]["create"]>;
+    monacoEditor!: ReturnType<typeof wrapper["createEditor"]>;
     /* 向外发送事件的hub */
     hub = mitt<{
         prepare: { path: string; model: FileModel };
@@ -17,7 +18,7 @@ export class FileManager {
         public id: string | number
     ) {}
     mount(container: HTMLElement) {
-        this.monacoEditor = monaco.editor.create(container, {
+        this.monacoEditor = wrapper.createEditor(container, {
             model: null,
             theme: "github-gist",
             autoIndent: "advanced",
@@ -44,7 +45,7 @@ export class FileManager {
             monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
             save
         );
-        applyTheme("github-gist");
+        // applyTheme("github-gist");
     }
     /* 根据 Model 查找 FileModel */
     findFileCache(model: FileModel["model"]) {

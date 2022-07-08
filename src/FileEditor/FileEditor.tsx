@@ -88,7 +88,13 @@ export const createFileEditor = (
             };
         });
         return (
-            <Suspense fallback={<Info>Loading</Info>}>
+            <Suspense
+                fallback={
+                    <div style={{ position: "relative" }}>
+                        <Info>Loading</Info>
+                    </div>
+                }
+            >
                 <Instance {...props}></Instance>
             </Suspense>
         );

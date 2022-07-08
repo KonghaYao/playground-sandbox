@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@babel/core': ^7.18.6
   '@babel/preset-typescript': ^7.18.6
+  '@codingame/monaco-editor-wrapper': ^1.15.0
   '@isomorphic-git/lightning-fs': ^4.6.0
   '@monaco-editor/loader': ^1.3.2
   '@rollup/plugin-alias': ^3.1.9
@@ -16,7 +17,10 @@ specifiers:
   less: ^4.1.3
   mitt: ^3.0.0
   monaco-editor: ^0.33.0
+  monaco-editor-textmate: ^3.0.0
+  monaco-textmate: ^3.0.1
   monaco-themes: ^0.4.2
+  onigasm: ^2.2.5
   postcss: ^8.4.14
   postcss-preset-env: ^7.7.2
   rollup: ^2.75.7
@@ -28,17 +32,23 @@ specifiers:
   tailwindcss: ^3.1.4
   typescript: ^4.5.4
   vscode-icons-js: ^11.6.1
+  vscode-oniguruma: ^1.6.2
 
 dependencies:
+  '@codingame/monaco-editor-wrapper': 1.15.0
   '@isomorphic-git/lightning-fs': 4.6.0
   '@monaco-editor/loader': 1.3.2_monaco-editor@0.33.0
   '@rollup/plugin-babel': 5.3.1_fb3qe53zzddvqjqqltveoanfhe
   '@vscode/codicons': 0.0.31
   mitt: 3.0.0
+  monaco-editor-textmate: 3.0.0_nurowwtvogix47pnszh4m7lsnu
+  monaco-textmate: 3.0.1_onigasm@2.2.5
   monaco-themes: 0.4.2
+  onigasm: 2.2.5
   postcss-preset-env: 7.7.2_postcss@8.4.14
   solid-js: 1.4.5
   vscode-icons-js: 11.6.1
+  vscode-oniguruma: 1.6.2
 
 devDependencies:
   '@babel/core': 7.18.6
@@ -373,6 +383,17 @@ packages:
       '@babel/helper-validator-identifier': 7.18.6
       to-fast-properties: 2.0.0
     dev: true
+
+  /@codingame/monaco-editor-wrapper/1.15.0:
+    resolution: {integrity: sha512-s7dJC4sGMsWEdyr4qq3wGsgEmW8VP6fZlriC6OEEd51hR7kXnXXZFAD9k7No/ucnXTBbqQeawJVLLsPE2q3Chw==}
+    dependencies:
+      monaco-editor: /@codingame/monaco-editor/0.33.7
+      vscode-oniguruma: 1.6.2
+    dev: false
+
+  /@codingame/monaco-editor/0.33.7:
+    resolution: {integrity: sha512-4nsW5GVTuqPD042sJNWzwJnlHtvxjmvs80GiGZtA+133pvABWRgQn9VP1pqnCbRxuY2DwqIBgYpRkuMoEdjVaQ==}
+    dev: false
 
   /@csstools/postcss-cascade-layers/1.0.4_postcss@8.4.14:
     resolution: {integrity: sha512-zP2tQIFu4C3HueOT+G4Pkla7f2Z6pfXphc1Y9wDE5jS2Ss6dk/asQ7FFEFWKgy3EkYc7E1FSjzhfeZVGg5sjXQ==}
@@ -1519,6 +1540,12 @@ packages:
     resolution: {integrity: sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==}
     dev: true
 
+  /lru-cache/5.1.1:
+    resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
+    dependencies:
+      yallist: 3.1.1
+    dev: false
+
   /magic-string/0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
     dependencies:
@@ -1578,9 +1605,28 @@ packages:
     resolution: {integrity: sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==}
     dev: false
 
+  /monaco-editor-textmate/3.0.0_nurowwtvogix47pnszh4m7lsnu:
+    resolution: {integrity: sha512-4BK3ual4WllRpiQBDcBO8NKdbk4ukdBtnl23cRYvu1eNWOWKYOBM0rYac50HvFClSbtd5GMezLPjkaim0iM7sw==}
+    peerDependencies:
+      monaco-editor: 0.x.x
+      monaco-textmate: ^3.0.0
+    dependencies:
+      monaco-editor: 0.33.0
+      monaco-textmate: 3.0.1_onigasm@2.2.5
+    dev: false
+
   /monaco-editor/0.33.0:
     resolution: {integrity: sha512-VcRWPSLIUEgQJQIE0pVT8FcGBIgFoxz7jtqctE+IiCxWugD0DwgyQBcZBhdSrdMC84eumoqMZsGl2GTreOzwqw==}
     dev: true
+
+  /monaco-textmate/3.0.1_onigasm@2.2.5:
+    resolution: {integrity: sha512-ZxxY3OsqUczYP1sGqo97tu+CJmMBwuSW+dL0WEBdDhOZ5G1zntw72hvBc68ZQAirosWvbDKgN1dL5k173QtFww==}
+    peerDependencies:
+      onigasm: ^2.0.0
+    dependencies:
+      fast-plist: 0.1.2
+      onigasm: 2.2.5
+    dev: false
 
   /monaco-themes/0.4.2:
     resolution: {integrity: sha512-T3kp6SC5MPJvwYGXZENCd0UOIKVgUVV5SjsiXLBhgEZBnScY+6gEbwNRK1oYmfwbf+dGVqF1bSLN5YcrFu3HmA==}
@@ -1650,6 +1696,12 @@ packages:
     dependencies:
       wrappy: 1.0.2
     dev: true
+
+  /onigasm/2.2.5:
+    resolution: {integrity: sha512-F+th54mPc0l1lp1ZcFMyL/jTs2Tlq4SqIHKIXGZOR/VkHkF9A7Fr5rRr5+ZG/lWeRsyrClLYRq7s/yFQ/XhWCA==}
+    dependencies:
+      lru-cache: 5.1.1
+    dev: false
 
   /p-finally/1.0.0:
     resolution: {integrity: sha512-LICb2p9CB7FS+0eR1oqWnHhp0FljGLZCWBE9aix0Uye9W8LTQPwMTYVGWQWIw9RdQiDg4+epXQODwIYJtSJaow==}
@@ -2772,6 +2824,10 @@ packages:
       '@types/jasmine': 3.10.6
     dev: false
 
+  /vscode-oniguruma/1.6.2:
+    resolution: {integrity: sha512-KH8+KKov5eS/9WhofZR8M8dMHWN2gTxjMsG4jd04YhpbPR91fUj7rYQ2/XjeHCJWbg7X++ApRIU9NUwM2vTvLA==}
+    dev: false
+
   /wrappy/1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
     dev: true
@@ -2780,6 +2836,10 @@ packages:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
     dev: true
+
+  /yallist/3.1.1:
+    resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
+    dev: false
 
   /yaml/1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
