@@ -22,6 +22,15 @@ let wrapper: typeof import("@codingame/monaco-editor-wrapper");
 export const getMonaco = async () => {
     await loadMonaco();
     wrapper = await import("@codingame/monaco-editor-wrapper");
+    await import(
+        "@codingame/monaco-editor-wrapper/dist/features/htmlContribution"
+    );
+    await import(
+        "@codingame/monaco-editor-wrapper/dist/features/typescriptContribution"
+    );
+    await import(
+        "@codingame/monaco-editor-wrapper/dist/features/extensionConfigurations"
+    );
     /* @ts-ignore*/
     globalThis.monaco = wrapper.monaco;
     return monaco;

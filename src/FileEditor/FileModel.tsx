@@ -8,10 +8,6 @@ export class FileModel {
     async init(path: string, code: string) {
         this.path = path;
         const language = languageDetection(path);
-        if (language) {
-            console.log("loading ", language);
-            await wrapper.loadLanguage(language);
-        }
         this.model = monaco.editor.createModel(code, language);
     }
     destroy() {
