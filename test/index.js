@@ -1,4 +1,4 @@
-import { createSandbox } from "../src/index";
+import { createSandbox } from "@forsee/sandbox";
 
 createSandbox(
     document.body,

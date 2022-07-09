@@ -18,7 +18,7 @@ export default {
         "monaco-editor",
         "monaco-editor-solid",
     ],
-    input: "./test/index.ts",
+    input: "./src/index.ts",
     output: {
         dir: "./dist/",
         format: "es",
