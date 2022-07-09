@@ -19,6 +19,7 @@ specifiers:
   less: ^4.1.3
   mitt: ^3.0.0
   monaco-editor: ^0.33.0
+  monaco-editor-solid: ^1.0.3
   monaco-editor-textmate: ^3.0.0
   monaco-textmate: ^3.0.1
   monaco-themes: ^0.4.2
@@ -43,6 +44,7 @@ dependencies:
   '@rollup/plugin-babel': 5.3.1_fb3qe53zzddvqjqqltveoanfhe
   '@vscode/codicons': 0.0.31
   mitt: 3.0.0
+  monaco-editor-solid: 1.0.3_qrcnvdr6f6ijnko3tvmvtlswgu
   monaco-editor-textmate: 3.0.0_nurowwtvogix47pnszh4m7lsnu
   monaco-textmate: 3.0.1_onigasm@2.2.5
   monaco-themes: 0.4.2
@@ -1622,6 +1624,31 @@ packages:
 
   /mitt/3.0.0:
     resolution: {integrity: sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==}
+    dev: false
+
+  /monaco-editor-solid/1.0.3_qrcnvdr6f6ijnko3tvmvtlswgu:
+    resolution: {integrity: sha512-SZoZGE/BG3ObdqIKjTrULBr9RD85cgSd0q4sHx0xy1dVGqJX34noRSBZXnhPxcYMwld088WMu5YOOING/eoZYA==}
+    dependencies:
+      '@codingame/monaco-editor-wrapper': 1.15.0
+      '@isomorphic-git/lightning-fs': 4.6.0
+      '@monaco-editor/loader': 1.3.2_monaco-editor@0.33.0
+      '@rollup/plugin-babel': 5.3.1_fb3qe53zzddvqjqqltveoanfhe
+      '@vscode/codicons': 0.0.31
+      mitt: 3.0.0
+      monaco-editor-textmate: 3.0.0_nurowwtvogix47pnszh4m7lsnu
+      monaco-textmate: 3.0.1_onigasm@2.2.5
+      monaco-themes: 0.4.2
+      onigasm: 2.2.5
+      postcss-preset-env: 7.7.2_postcss@8.4.14
+      solid-js: 1.4.5
+      vscode-icons-js: 11.6.1
+      vscode-oniguruma: 1.6.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/babel__core'
+      - monaco-editor
+      - postcss
+      - rollup
     dev: false
 
   /monaco-editor-textmate/3.0.0_nurowwtvogix47pnszh4m7lsnu:

@@ -5,7 +5,7 @@ import { FileExplorer } from "./FileExplorer";
 import { Previewer } from "./Previewer/Previewer";
 import style from "./sandbox.module.less";
 import previewStyle from "./style/preview.module.less";
-import { WatchingEditor, FileEditorList } from "./FileEditor/FileExidtorList";
+import { WatchingEditor, FileEditorList } from "monaco-editor-solid";
 export type SandboxInput = {
     fs: FS;
     files: string[][];

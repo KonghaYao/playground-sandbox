@@ -16,20 +16,13 @@ export default {
         "solid-js/web",
         "@monaco-editor/loader",
         "monaco-editor",
+        "monaco-editor-solid",
     ],
     input: "./test/index.ts",
     output: {
         dir: "./dist/",
         format: "es",
-        paths: {
-            // 这个库 40k
-            "vscode-icons-js": "https://cdn.skypack.dev/vscode-icons-js",
-            // 两个主要的库也可以使用 cdn
-            "solid-js": "https://cdn.skypack.dev/solid-js",
-            "solid-js/web": "https://cdn.skypack.dev/solid-js/web/dist/web.js",
-            "@monaco-editor/loader":
-                "https://cdn.skypack.dev/@monaco-editor/loader",
-        },
+        paths: {},
         globals: {
             "vscode-oniguruma": "onig",
         },

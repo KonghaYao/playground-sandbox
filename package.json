@@ -33,6 +33,7 @@
         "@rollup/plugin-babel": "^5.3.1",
         "@vscode/codicons": "^0.0.31",
         "mitt": "^3.0.0",
+        "monaco-editor-solid": "^1.0.3",
         "monaco-editor-textmate": "^3.0.0",
         "monaco-textmate": "^3.0.1",
         "monaco-themes": "^0.4.2",
