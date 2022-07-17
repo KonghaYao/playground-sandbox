@@ -24,6 +24,25 @@
     @apply flex flex-col h-full flex-grow;
     header {
         @apply flex;
+        nav {
+            @apply text-xs flex mx-1 px-1 h-full items-center  cursor-pointer;
+            &[data-all] {
+                @apply bg-green-400 text-gray-100;
+            }
+            &[data-error] {
+                @apply bg-red-400 text-gray-100;
+            }
+            &[data-warn] {
+                @apply bg-orange-400 text-gray-100;
+            }
+            &[data-log] {
+                @apply bg-sky-400 text-gray-100;
+            }
+            /* 小数字 */
+            div {
+                @apply mx-1;
+            }
+        }
     }
     main {
         @apply flex-grow h-full;

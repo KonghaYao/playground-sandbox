@@ -1,5 +1,11 @@
 import { ConsoleView } from "@forsee/console";
-import { Component, onCleanup, onMount } from "solid-js";
+import {
+    Component,
+    createMemo,
+    createSignal,
+    onCleanup,
+    onMount,
+} from "solid-js";
 import { CircleSlash, Refresh, ScreenFull } from "../Helpers/Icon";
 import { fullscreen } from "../utils/fullscreen";
 import { CompilerManager, IframeFactory, LoadFile } from "./IframeFactory";
@@ -10,9 +16,10 @@ export const Previewer: Component<{
     loadFile: LoadFile;
 }> = (props) => {
     let container: HTMLElement;
-    let consoleNav: HTMLDivElement;
+    let consoleNav: HTMLElement;
     let manager: CompilerManager;
     let view!: ConsoleView;
+
     onMount(async () => {
         view = new ConsoleView(consoleNav);
         const [Manager] = await IframeFactory(container, props.loadFile, {
@@ -59,19 +66,69 @@ export const Previewer: Component<{
                     slot="start"
                     ref={container!}
                 ></main>
-                <nav slot="end" class={style.console}>
-                    <header>
-                        <div
-                            onclick={() => {
-                                view.clear();
-                            }}
-                        >
-                            <CircleSlash></CircleSlash>
-                        </div>
-                    </header>
-                    <main ref={consoleNav!}></main>
-                </nav>
+                <ConsoleViewer
+                    slot="end"
+                    getView={() => view}
+                    ref={(el) => {
+                        consoleNav = el;
+                    }}
+                ></ConsoleViewer>
             </sl-split-panel>
         </>
+    );
+};
+export const ConsoleViewer: Component<{
+    slot?: string;
+    ref: (el: HTMLElement) => void;
+    getView: () => ConsoleView;
+}> = (props) => {
+    const [log, setLog] = createSignal(0);
+    const [error, setError] = createSignal(0);
+    const [warn, setWarn] = createSignal(0);
+    const col = {
+        log() {
+            setLog((i) => i + 1);
+        },
+        error() {
+            setError((i) => i + 1);
+        },
+        warn() {
+            setWarn((i) => i + 1);
+        },
+    };
+    const all = createMemo(() => {
+        return log() + error() + warn();
+    });
+    onMount(() => {
+        props.getView().on("insert", (log) => {
+            /* @ts-ignore */
+            if (log.type in col) col[log.type]();
+        });
+    });
+    return (
+        <nav slot={props.slot} class={style.console}>
+            <header>
+                <div
+                    onclick={() => {
+                        props.getView().clear();
+                    }}
+                >
+                    <CircleSlash></CircleSlash>
+                </div>
+                <nav data-all>
+                    All <div>{all()}</div>
+                </nav>
+                <nav data-error>
+                    Error <div>{error()}</div>
+                </nav>
+                <nav data-warn>
+                    Warning <div>{warn()}</div>
+                </nav>
+                <nav data-log>
+                    Log <div>{log()}</div>
+                </nav>
+            </header>
+            <main ref={props.ref}></main>
+        </nav>
     );
 };
