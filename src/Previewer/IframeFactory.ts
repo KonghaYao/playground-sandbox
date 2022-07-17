@@ -54,9 +54,10 @@ export class CompilerManager {
     }>();
     createConsole(iframe: HTMLIFrameElement) {
         const _c = new Console();
+
         (iframe.contentWindow! as any).console = _c;
+
         _c.init(
-            /* @ts-ignore */
             (...args) => this.ConsoleHub.emit("update", args),
             () => this.ConsoleHub.emit("clear", null),
             "classic"
@@ -88,6 +89,7 @@ export class CompilerManager {
     }
     reload() {
         this.iframe.destroy();
+        
         this.build();
     }
     destroy() {

@@ -3,6 +3,7 @@ import { Component, onCleanup, onMount } from "solid-js";
 import { Refresh, ScreenFull } from "../Helpers/Icon";
 import { fullscreen } from "../utils/fullscreen";
 import { CompilerManager, IframeFactory, LoadFile } from "./IframeFactory";
+import style from "../style/preview.module.less";
 /* 用于承载 Iframe */
 export const Previewer: Component<{
     port?: MessagePort;
@@ -23,6 +24,7 @@ export const Previewer: Component<{
                 });
             },
         });
+        console.log(view);
         manager = Manager;
     });
     onCleanup(() => {
@@ -50,8 +52,15 @@ export const Previewer: Component<{
                     {ScreenFull()}
                 </div>
             </header>
-            <main class="iframe-container" ref={container!}></main>
-            <nav ref={consoleNav!}></nav>
+            <sl-split-panel vertical style="flex:1" snap="25% 50% 75%">
+                <aside slot="handle" class={style.handle}></aside>
+                <main
+                    class="iframe-container"
+                    slot="start"
+                    ref={container!}
+                ></main>
+                <nav ref={consoleNav!} slot="end"></nav>
+            </sl-split-panel>
         </>
     );
 };
