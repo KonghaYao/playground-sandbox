@@ -1,6 +1,6 @@
 import { ConsoleView } from "@forsee/console";
 import { Component, onCleanup, onMount } from "solid-js";
-import { Refresh, ScreenFull } from "../Helpers/Icon";
+import { CircleSlash, Refresh, ScreenFull } from "../Helpers/Icon";
 import { fullscreen } from "../utils/fullscreen";
 import { CompilerManager, IframeFactory, LoadFile } from "./IframeFactory";
 import style from "../style/preview.module.less";
@@ -12,8 +12,9 @@ export const Previewer: Component<{
     let container: HTMLElement;
     let consoleNav: HTMLDivElement;
     let manager: CompilerManager;
+    let view!: ConsoleView;
     onMount(async () => {
-        const view = new ConsoleView(consoleNav);
+        view = new ConsoleView(consoleNav);
         const [Manager] = await IframeFactory(container, props.loadFile, {
             beforeBuild(manager) {
                 manager.ConsoleHub.on("update", (args) => {
@@ -24,7 +25,6 @@ export const Previewer: Component<{
                 });
             },
         });
-        console.log(view);
         manager = Manager;
     });
     onCleanup(() => {
@@ -52,14 +52,25 @@ export const Previewer: Component<{
                     {ScreenFull()}
                 </div>
             </header>
-            <sl-split-panel vertical style="flex:1" snap="25% 50% 75%">
+            <sl-split-panel vertical style="flex:1;z-index:1">
                 <aside slot="handle" class={style.handle}></aside>
                 <main
                     class="iframe-container"
                     slot="start"
                     ref={container!}
                 ></main>
-                <nav ref={consoleNav!} slot="end"></nav>
+                <nav slot="end" class={style.console}>
+                    <header>
+                        <div
+                            onclick={() => {
+                                view.clear();
+                            }}
+                        >
+                            <CircleSlash></CircleSlash>
+                        </div>
+                    </header>
+                    <main ref={consoleNav!}></main>
+                </nav>
             </sl-split-panel>
         </>
     );

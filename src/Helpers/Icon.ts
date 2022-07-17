@@ -6,10 +6,12 @@ import ClearAll from "@vscode/codicons/src/icons/clear-all.svg";
 import LayoutSidebarLeft from "@vscode/codicons/src/icons/layout-sidebar-left.svg";
 import LayoutSidebarLeftOff from "@vscode/codicons/src/icons/layout-sidebar-left-off.svg";
 import SplitHorizontal from "@vscode/codicons/src/icons/split-horizontal.svg";
+import CircleSlash from "@vscode/codicons/src/icons/circle-slash.svg";
 /* 
     icon https://microsoft.github.io/vscode-codicons/dist/codicon.html
 */
 export {
+    CircleSlash,
     Left,
     Refresh,
     Close,

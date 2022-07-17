@@ -89,7 +89,7 @@ export class CompilerManager {
     }
     reload() {
         this.iframe.destroy();
-        
+        this.ConsoleHub.emit("clear", null);
         this.build();
     }
     destroy() {
