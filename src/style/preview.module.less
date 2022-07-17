@@ -21,22 +21,26 @@
     @apply w-full bg-gray-100;
 }
 .console {
-    @apply flex flex-col h-full flex-grow;
+    @apply flex flex-col h-full flex-grow font-normal;
+
     header {
-        @apply flex;
+        @apply flex select-none bg-white;
         nav {
             @apply text-xs flex mx-1 px-1 h-full items-center  cursor-pointer;
             &[data-all] {
-                @apply bg-green-400 text-gray-100;
+                @apply bg-green-400 text-gray-200;
             }
             &[data-error] {
-                @apply bg-red-400 text-gray-100;
+                @apply bg-red-400 text-gray-200;
             }
             &[data-warn] {
-                @apply bg-orange-400 text-gray-100;
+                @apply bg-orange-400 text-gray-200;
             }
             &[data-log] {
-                @apply bg-sky-400 text-gray-100;
+                @apply bg-sky-400 text-gray-200;
+            }
+            &[data-selected="true"] {
+                @apply font-bold text-white;
             }
             /* 小数字 */
             div {

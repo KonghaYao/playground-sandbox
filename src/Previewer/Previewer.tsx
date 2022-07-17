@@ -99,12 +99,26 @@ export const ConsoleViewer: Component<{
     const all = createMemo(() => {
         return log() + error() + warn();
     });
+    type FilterTag = "all" | "log" | "error" | "warn";
+    const [selected, setSelected] = createSignal<FilterTag>("all");
     onMount(() => {
-        props.getView().on("insert", (log) => {
+        const view = props.getView();
+        view.on("insert", (log) => {
             /* @ts-ignore */
             if (log.type in col) col[log.type]();
         });
+        view.on("clear", () => {
+            setLog(0);
+            setWarn(0);
+            setError(0);
+        });
     });
+    const clickFilter = (type: FilterTag) => {
+        return () => {
+            props.getView().setOption("filter", type);
+            setSelected(type);
+        };
+    };
     return (
         <nav slot={props.slot} class={style.console}>
             <header>
@@ -115,19 +129,36 @@ export const ConsoleViewer: Component<{
                 >
                     <CircleSlash></CircleSlash>
                 </div>
-                <nav data-all>
+                <nav
+                    data-all
+                    data-selected={selected() === "all"}
+                    onclick={clickFilter("all")}
+                >
                     All <div>{all()}</div>
                 </nav>
-                <nav data-error>
+                <nav
+                    data-error
+                    data-selected={selected() === "error"}
+                    onclick={clickFilter("error")}
+                >
                     Error <div>{error()}</div>
                 </nav>
-                <nav data-warn>
-                    Warning <div>{warn()}</div>
+                <nav
+                    data-warn
+                    data-selected={selected() === "warn"}
+                    onclick={clickFilter("warn")}
+                >
+                    Warn <div>{warn()}</div>
                 </nav>
-                <nav data-log>
+                <nav
+                    data-log
+                    data-selected={selected() === "log"}
+                    onclick={clickFilter("log")}
+                >
                     Log <div>{log()}</div>
                 </nav>
             </header>
+
             <main ref={props.ref}></main>
         </nav>
     );
