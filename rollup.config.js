@@ -17,6 +17,7 @@ export default {
         "@monaco-editor/loader",
         "monaco-editor",
         "monaco-editor-solid",
+        "rollup-web",
     ],
     input: "./src/index.ts",
     output: {
@@ -79,16 +80,7 @@ export default {
                 }
             },
         },
-        alias({
-            entries: [
-                {
-                    find: "rollup-web",
-                    replacement: false
-                        ? "https://cdn.jsdelivr.net/npm/rollup-web"
-                        : "./rollup-web",
-                },
-            ],
-        }),
+
         nodeResolve({
             browser: true,
             extensions: [".ts", ".tsx", ".js"],

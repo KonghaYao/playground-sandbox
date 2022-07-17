@@ -1,3 +1,4 @@
+import { ConsoleView } from "@forsee/console";
 import { Component, onCleanup, onMount } from "solid-js";
 import { Refresh, ScreenFull } from "../Helpers/Icon";
 import { fullscreen } from "../utils/fullscreen";
@@ -8,9 +9,20 @@ export const Previewer: Component<{
     loadFile: LoadFile;
 }> = (props) => {
     let container: HTMLElement;
+    let consoleNav: HTMLDivElement;
     let manager: CompilerManager;
     onMount(async () => {
-        const [Manager] = await IframeFactory(container, props.loadFile);
+        const view = new ConsoleView(consoleNav);
+        const [Manager] = await IframeFactory(container, props.loadFile, {
+            beforeBuild(manager) {
+                manager.ConsoleHub.on("update", (args) => {
+                    view.insertSync(...args);
+                });
+                manager.ConsoleHub.on("clear", () => {
+                    view.clear();
+                });
+            },
+        });
         manager = Manager;
     });
     onCleanup(() => {
@@ -39,6 +51,7 @@ export const Previewer: Component<{
                 </div>
             </header>
             <main class="iframe-container" ref={container!}></main>
+            <nav ref={consoleNav!}></nav>
         </>
     );
 };

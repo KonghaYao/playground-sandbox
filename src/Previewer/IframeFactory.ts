@@ -1,4 +1,8 @@
+import { Console } from "@forsee/console/dist/Console";
+import type { ConsoleView } from "@forsee/console";
+import mitt from "mitt";
 import { Evaluator, IframeEnv } from "../Helpers/Helper";
+
 export type LoadFile = (string: string) => Promise<string>;
 
 type Config = { target?: string; compiler?: { url?: string } };
@@ -43,30 +47,52 @@ export class CompilerManager {
         await this.evaluator.useWorker(url);
         return this.evaluator.createCompilerPort();
     }
+    // TODO 类型注解
+    ConsoleHub = mitt<{
+        update: Parameters<ConsoleView["insertSync"]>;
+        clear: null;
+    }>();
+    createConsole(iframe: HTMLIFrameElement) {
+        const _c = new Console();
+        (iframe.contentWindow! as any).console = _c;
+        _c.init(
+            /* @ts-ignore */
+            (...args) => this.ConsoleHub.emit("update", args),
+            () => this.ConsoleHub.emit("clear", null),
+            "classic"
+        );
+    }
     async build() {
         const port = await this.createPort(); // 构建 Compiler 线程, 已经经过去重
         // 构建 Iframe
         const iframe = new IframeEnv();
         this.iframe = iframe;
         const initHTMLPath = this.config.target || "/index.html";
-        await this.loadFile(initHTMLPath).then(() => {
-            return iframe.mount({
-                port,
-                container: this.container,
-                getFile: (src: string) => {
-                    return this.loadFile(src);
-                },
-                src: initHTMLPath,
-                // 构建虚拟 URL
-                root: new URL("/index.html", location.href).toString(),
+        await this.loadFile(initHTMLPath)
+            .then(() => {
+                return iframe.mount({
+                    port,
+                    container: this.container,
+                    getFile: (src: string) => {
+                        return this.loadFile(src);
+                    },
+                    src: initHTMLPath,
+
+                    // 构建虚拟 URL
+                    root: new URL("/index.html", location.href).toString(),
+                });
+            })
+            .then(() => {
+                this.createConsole(iframe.iframeBox.frame);
             });
-        });
     }
     reload() {
         this.iframe.destroy();
         this.build();
     }
     destroy() {
+        /* @ts-ignore */
+        this.ConsoleHub.off("*");
         this.iframe.destroy();
         this.evaluator.compiler?.destroy();
     }
@@ -75,9 +101,13 @@ export class CompilerManager {
 export const IframeFactory = async (
     container: HTMLElement,
     loadFile: LoadFile,
-    setting?: Config
+    {
+        setting,
+        beforeBuild,
+    }: { setting?: Config; beforeBuild?: (manager: CompilerManager) => void }
 ) => {
     const manager = new CompilerManager(container, loadFile);
+    beforeBuild && beforeBuild(manager);
     await manager.loadConfig(setting);
     await manager.build();
     return [manager] as const;
