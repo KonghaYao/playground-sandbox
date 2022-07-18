@@ -1,4 +1,5 @@
 import { ConsoleView } from "@forsee/console";
+import { Split } from "solid-split-component";
 import {
     Component,
     createMemo,
@@ -59,21 +60,20 @@ export const Previewer: Component<{
                     {ScreenFull()}
                 </div>
             </header>
-            <sl-split-panel vertical style="flex:1;z-index:1">
-                <aside slot="handle" class={style.handle}></aside>
+            <Split direction="vertical" class={style.panel}>
                 <main
-                    class="iframe-container"
-                    slot="start"
+                    class={style.iframe_container}
+                    // slot="start"
                     ref={container!}
                 ></main>
                 <ConsoleViewer
-                    slot="end"
+                    // slot="end"
                     getView={() => view}
                     ref={(el) => {
                         consoleNav = el;
                     }}
                 ></ConsoleViewer>
-            </sl-split-panel>
+            </Split>
         </>
     );
 };
@@ -103,7 +103,7 @@ export const ConsoleViewer: Component<{
     const [selected, setSelected] = createSignal<FilterTag>("all");
     onMount(() => {
         const view = props.getView();
-        view.on("insert", (log) => {
+        view.on("insert", (log: any) => {
             /* @ts-ignore */
             if (log.type in col) col[log.type]();
         });

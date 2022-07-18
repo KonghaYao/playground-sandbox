@@ -17,11 +17,17 @@
         @apply h-full w-full flex-grow bg-white;
     }
 }
+.panel {
+    @apply flex-grow h-full w-full;
+}
 .handle {
-    @apply w-full bg-gray-100;
+    @apply w-full bg-gray-100 z-10 h-6 flex;
+}
+.iframe_container {
+    @apply overflow-hidden w-full;
 }
 .console {
-    @apply flex flex-col h-full flex-grow font-normal;
+    @apply flex flex-col w-full h-full flex-grow font-normal overflow-hidden;
 
     header {
         @apply flex select-none bg-white;

@@ -24,9 +24,6 @@ export default {
         dir: "./dist/",
         format: "es",
         paths: {},
-        globals: {
-            "vscode-oniguruma": "onig",
-        },
     },
     plugins: [
         {
