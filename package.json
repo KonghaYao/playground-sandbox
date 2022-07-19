@@ -27,7 +27,7 @@
         "build": "rollup -c=rollup.config.js "
     },
     "dependencies": {
-        "@forsee/console": "^1.0.3",
+        "@forsee/console": "^1.1.0",
         "@isomorphic-git/lightning-fs": "^4.6.0",
         "@vscode/codicons": "^0.0.31",
         "mitt": "^3.0.0",
