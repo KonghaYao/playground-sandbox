@@ -159,7 +159,7 @@ export const ConsoleViewer: Component<{
                 </nav>
             </header>
 
-            <main ref={props.ref}></main>
+            <aside ref={props.ref}></aside>
         </nav>
     );
 };
