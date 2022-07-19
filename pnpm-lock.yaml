@@ -4,7 +4,7 @@ specifiers:
   '@babel/core': ^7.18.6
   '@babel/preset-typescript': ^7.18.6
   '@codingame/monaco-editor': ^0.33.7
-  '@forsee/console': ^1.0.2
+  '@forsee/console': ^1.0.3
   '@isomorphic-git/lightning-fs': ^4.6.0
   '@rollup/plugin-alias': ^3.1.9
   '@rollup/plugin-babel': ^5.3.1
@@ -33,7 +33,7 @@ specifiers:
   vscode-icons-js: ^11.6.1
 
 dependencies:
-  '@forsee/console': 1.0.2
+  '@forsee/console': 1.0.3
   '@isomorphic-git/lightning-fs': 4.6.0
   '@rollup/plugin-babel': 5.3.1_3crms4j33zkfeqv7ozcuia3hfq
   '@vscode/codicons': 0.0.31
@@ -517,8 +517,8 @@ packages:
       postcss-selector-parser: 6.0.10
     dev: false
 
-  /@forsee/console/1.0.2:
-    resolution: {integrity: sha512-WlBDOUFBnqxhGRIyLrakzZqfiBjvY3qQOGQfwd79tqZAWCtQ8JHmowoSPfh9iRMrNst3S8nq7rx1W83joWYdEg==}
+  /@forsee/console/1.0.3:
+    resolution: {integrity: sha512-FGqUeU9r1xolvon117CRyZ0x7xKWmgyroOBunjNsilhuX4kA+2wQ+WCInCtN/h1zpIntvfQ5jm8fWlOHbW91Aw==}
     dependencies:
       comlink: 4.3.1
       licia: 1.36.0

@@ -1,4 +1,3 @@
-import "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
 import { Split } from "solid-split-component";
 import FS from "@isomorphic-git/lightning-fs";
 import { Component, createSignal } from "solid-js";
@@ -19,7 +18,10 @@ export const Sandbox: Component<SandboxInput> = (props) => {
     let watchingEditor: WatchingEditor;
     const [ExplorerVisible, setExplorerVisible] = createSignal(false);
     return (
-        <Split class={style.sandbox} direction="horizontal">
+        <Split
+            class={[style.sandbox, "monaco-editor"].join(" ")}
+            direction="horizontal"
+        >
             <div class={style.file_box}>
                 <FileExplorer
                     visible={ExplorerVisible}

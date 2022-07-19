@@ -3,14 +3,18 @@
     width: 100%;
     font-family: "Source";
     font-weight: bold;
-
-    @apply bg-gray-800 text-gray-300 flex;
+    background-color: var(--vscode-editor-background);
+    color: var(--vscode-foreground);
+    @apply flex;
     input {
         /* 这里需要单独设置来实现字体 */
         font-family: "Source";
     }
     [data-icon] {
         @apply flex items-center justify-center p-1 cursor-pointer select-none;
+    }
+    [class*="gutter"] {
+        @apply cursor-pointer;
     }
 }
 .file_box {
