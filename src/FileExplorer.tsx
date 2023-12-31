@@ -1,9 +1,9 @@
 import { Accessor, Component, createSignal, For, Setter } from "solid-js";
 import { getIconForFile, getIconForFolder } from "vscode-icons-js";
-import type FS from "@isomorphic-git/lightning-fs";
 import { Left } from "./Helpers/Icon";
+import { IFileStats } from "@codesandbox/nodebox/build/modules/fs";
+import { SandboxContext } from "./context/sandbox";
 type Props = {
-    fs: FS;
     openFile: (path: string) => void;
     initPath?: string;
     visible: Accessor<boolean>;
@@ -14,7 +14,7 @@ export const FileExplorer: Component<Props> = (props) => {
     const initPath = props.initPath || "/";
     const [path, setPath] = createSignal(initPath);
     const [fileList, setFileList] = createSignal(
-        [] as (FS.Stats & { name: string })[]
+        [] as (IFileStats & { name: string })[]
     );
 
     const { jumpTo, back, enter } = createControl(
@@ -39,11 +39,12 @@ export const FileExplorer: Component<Props> = (props) => {
                 <For each={fileList()}>
                     {(item) => {
                         const name = item.name;
+                        item.type
                         return (
                             <FileTab
                                 name={name}
-                                isFile={item.isFile()}
-                                onclick={() => enter(name, item.isFile())}
+                                isFile={item.type === 'file'}
+                                onclick={() => enter(name, item.type === 'file')}
                             ></FileTab>
                         );
                     }}
@@ -75,19 +76,18 @@ export const FileTab: Component<{
 /* 创建文件浏览器的控制器 */
 function createControl(
     props: Props,
-    setFileList: Setter<(FS.Stats & { name: string })[]>,
+    setFileList: Setter<(IFileStats & { name: string })[]>,
     setPath: Setter<string>,
     path: Accessor<string>
 ) {
+    const context = SandboxContext.use()
     /* 获取文件列表，其中的元素为 Stats 并扩充 name 属性 */
     const getFileList = async (path: string) => {
-        const list: string[] = await props.fs.promises.readdir(path);
+        const list: string[] = await context.fs().readdir(path);
         return Promise.all(
             list.map((name) =>
-                props.fs.promises.stat(path + "/" + name).then((res) => {
-                    return Object.assign(res, { name }) as FS.Stats & {
-                        name: string;
-                    };
+                context.fs().stat(path + "/" + name).then((res) => {
+                    return Object.assign(res, { name })
                 })
             )
         );

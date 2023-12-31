@@ -9,36 +9,21 @@ import {
 } from "solid-js";
 import { CircleSlash, Refresh, ScreenFull } from "../Helpers/Icon";
 import { fullscreen } from "../utils/fullscreen";
-import { CompilerManager, IframeFactory, LoadFile } from "./IframeFactory";
 import style from "../style/preview.module.less";
+import { NodeBox } from "./NodeBox";
 /* 用于承载 Iframe */
 export const Previewer: Component<{
     port?: MessagePort;
-    loadFile: LoadFile;
 }> = (props) => {
     let container: HTMLElement;
     let consoleNav: HTMLElement;
-    let manager: CompilerManager;
     let view!: ConsoleView;
 
     onMount(async () => {
         view = new ConsoleView(consoleNav);
-        const [Manager] = await IframeFactory(container, props.loadFile, {
-            beforeBuild(manager) {
-                manager.ConsoleHub.on("update", (args) => {
-                    view.insertSync(...args);
-                });
-                manager.ConsoleHub.on("clear", () => {
-                    view.clear();
-                });
-            },
-        });
-        manager = Manager;
+
     });
     onCleanup(() => {
-        manager.destroy();
-        container = undefined as any;
-        manager = undefined as any;
     });
     return (
         <>
@@ -46,7 +31,7 @@ export const Previewer: Component<{
                 <div
                     data-icon
                     onclick={() => {
-                        manager.reload();
+
                     }}
                 >
                     {Refresh()}
@@ -61,11 +46,7 @@ export const Previewer: Component<{
                 </div>
             </header>
             <Split direction="vertical" class={style.panel}>
-                <main
-                    class={style.iframe_container}
-                    // slot="start"
-                    ref={container!}
-                ></main>
+                <NodeBox></NodeBox>
                 <ConsoleViewer
                     // slot="end"
                     getView={() => view}

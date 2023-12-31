@@ -1,11 +1,11 @@
-import _FS from "@isomorphic-git/lightning-fs";
+import { FileSystemApi } from "@codesandbox/nodebox/build/modules/fs";
 
 type TreeObject = {
     [ket: string]: TreeObject | string;
 };
 /* 向外部导出的 API */
 export class FileAPI {
-    constructor(public fs: _FS) {}
+    constructor(public fs: FileSystemApi) {}
     /* 安全地创建深层文件夹并给出文件 */
     async outputFile(path: string, code: string) {
         const list = path.split("/");
@@ -15,9 +15,9 @@ export class FileAPI {
                 return col.then(async (root) => {
                     const dir = root + cur + "/";
                     try {
-                        await this.fs.promises.stat(dir);
+                        await this.fs.stat(dir);
                     } catch (e) {
-                        await this.fs.promises.mkdir(dir);
+                        await this.fs.mkdir(dir);
                     }
                     return dir;
                 });
@@ -25,7 +25,7 @@ export class FileAPI {
                 return col;
             }
         }, Promise.resolve("/"));
-        return this.fs.promises.writeFile(path, code);
+        return this.fs.writeFile(path, code);
     }
     /* 将 web 地址映射到 fs 中 */
     async reflect(

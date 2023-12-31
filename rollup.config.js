@@ -19,7 +19,7 @@ export default {
         "monaco-editor-solid",
         "rollup-web",
     ],
-    input: "./src/index.ts",
+    input: "./src/index.tsx",
     output: {
         dir: "./dist/",
         format: "es",

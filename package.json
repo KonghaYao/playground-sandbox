@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "@cn-ui/reactive": "^2.3.0",
+        "@codesandbox/nodebox": "^0.1.9",
         "@forsee/console": "^1.1.0",
         "@isomorphic-git/lightning-fs": "^4.6.0",
         "@vscode/codicons": "^0.0.31",

@@ -28,5 +28,5 @@
         "src/worker.js",
         "src/sandbox.tsx",
         "src/utils/injectStyle.tsx"
-    ]
+, "src/index.tsx"    ]
 }

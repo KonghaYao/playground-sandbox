@@ -4,20 +4,12 @@ createSandbox(
     document.body,
     {
         files: [
-            ["/index.html", "/rollup.config.web.js"],
-            ["/rollup.config.web.js"],
+            ["/package.json"],
             [],
         ],
+        async onMount(context) {
+            await context.fetchTo(new Request('/test/index.html'), "/index.html")
+            console.log(await context.fs().readdir('/'))
+        }
     },
-    {
-        async beforeMount(api) {
-            await api.mergeTree({
-                "rollup.config.web.js": "./test/worker.js",
-                "index.html": "./test/index.html",
-                test: {
-                    "index.html": "./index.html",
-                },
-            });
-        },
-    }
 );
