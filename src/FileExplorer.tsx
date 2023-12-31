@@ -2,7 +2,6 @@ import { Accessor, Component, createSignal, For, Setter } from "solid-js";
 import { getIconForFile, getIconForFolder } from "vscode-icons-js";
 import type FS from "@isomorphic-git/lightning-fs";
 import { Left } from "./Helpers/Icon";
-import style from "./style/explorer.module.less";
 type Props = {
     fs: FS;
     openFile: (path: string) => void;
@@ -27,16 +26,16 @@ export const FileExplorer: Component<Props> = (props) => {
     jumpTo(initPath);
     return (
         <nav
-            class={style.file_explorer}
+            class='select-none h-full text-sm flex-grow flex flex-col'
             style={{ display: props.visible() ? "block" : "none" }}
         >
-            <header>
+            <header class="flex items-center">
                 <div onclick={back} data-icon>
                     {Left()}
                 </div>
-                <input type="text" value={path()} />
+                <input type="text" class="w-full m-2" value={path()} />
             </header>
-            <div class={style.file_list}>
+            <section class='flex flex-col overflow-auto overflow-x-hidden h-full'>
                 <For each={fileList()}>
                     {(item) => {
                         const name = item.name;
@@ -49,7 +48,7 @@ export const FileExplorer: Component<Props> = (props) => {
                         );
                     }}
                 </For>
-            </div>
+            </section>
         </nav>
     );
 };
@@ -66,8 +65,8 @@ export const FileTab: Component<{
             ? getIconForFile(props.name)
             : getIconForFolder(props.name));
     return (
-        <span class="single-tab" onclick={props.onclick as any}>
-            <img src={src} alt="" />
+        <span class="single-tab flex items-center w-full cursor-pointer hover:bg-gray-700" onclick={props.onclick as any}>
+            <img class="w-4 h-4 mx-2" src={src} alt="" />
             {props.name}
         </span>
     );

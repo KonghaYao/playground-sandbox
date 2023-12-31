@@ -1,4 +1,4 @@
-import { createSandbox } from "@forsee/sandbox";
+import { createSandbox } from "../dist/index.js";
 
 createSandbox(
     document.body,
@@ -11,8 +11,6 @@ createSandbox(
     },
     {
         async beforeMount(api) {
-            // await api.reflect("/rollup.config.web.js", "./test/worker.js");
-            // await api.reflect("/index.html", "./test/index.html");
             await api.mergeTree({
                 "rollup.config.web.js": "./test/worker.js",
                 "index.html": "./test/index.html",

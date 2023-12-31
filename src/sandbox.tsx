@@ -1,22 +1,23 @@
 import { Split } from "solid-split-component";
 import FS from "@isomorphic-git/lightning-fs";
-import { Component, createSignal } from "solid-js";
 import { FileExplorer } from "./FileExplorer";
 import { Previewer } from "./Previewer/Previewer";
 import style from "./sandbox.module.less";
 import previewStyle from "./style/preview.module.less";
 import { WatchingEditor, FileEditorList } from "monaco-editor-solid";
-export type SandboxInput = {
+import { atom } from "@cn-ui/reactive";
+
+
+export const Sandbox = (props: {
     fs: FS;
     files: string[][];
-};
-export const Sandbox: Component<SandboxInput> = (props) => {
+}) => {
     /* 加载文件的方式 */
     const loadFile = async (url: string) => {
         return props.fs.promises.readFile(url, "utf8") as Promise<string>;
     };
     let watchingEditor: WatchingEditor;
-    const [ExplorerVisible, setExplorerVisible] = createSignal(false);
+    const ExplorerVisible = atom(false);
     return (
         <Split
             class={[style.sandbox, "monaco-editor"].join(" ")}
@@ -37,8 +38,7 @@ export const Sandbox: Component<SandboxInput> = (props) => {
                 <FileEditorList
                     toggleExplorer={(bool?: boolean) => {
                         if (bool === undefined) bool = !ExplorerVisible();
-                        setExplorerVisible(bool);
-                        console.log(ExplorerVisible());
+                        ExplorerVisible(bool);
                     }}
                     fs={props.fs}
                     files={props.files}
