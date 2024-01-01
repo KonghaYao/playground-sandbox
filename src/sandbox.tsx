@@ -5,7 +5,7 @@ import style from "./sandbox.module.less";
 import previewStyle from "./style/preview.module.less";
 import { WatchingEditor, FileEditorList } from "monaco-editor-solid";
 import { atom } from "@cn-ui/reactive";
-import { Show, onMount, useContext } from "solid-js";
+import { Show } from "solid-js";
 import { SandboxContext } from "./context/sandbox";
 
 export interface SandboxInput {
@@ -29,7 +29,7 @@ export const Sandbox = (props: SandboxInput) => {
                             context.fs().readFile(path, "utf8").then((res) => {
                                 watchingEditor
                                     .getWatching()
-                                    .openFile(path, res as any as string);
+                                    .openFile(path, res as unknown as string);
                             });
                         }}
                     ></FileExplorer>

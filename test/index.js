@@ -1,4 +1,4 @@
-import { createSandbox } from "../dist/index.js";
+import { createSandbox } from "../src/index.tsx";
 
 createSandbox(
     document.body,

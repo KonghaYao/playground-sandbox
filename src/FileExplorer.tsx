@@ -16,7 +16,7 @@ export const FileExplorer: Component<Props> = (props) => {
     const [fileList, setFileList] = createSignal(
         [] as (IFileStats & { name: string })[]
     );
-
+    const context = SandboxContext.use()
     const { jumpTo, back, enter } = createControl(
         props,
         setFileList,
@@ -26,14 +26,21 @@ export const FileExplorer: Component<Props> = (props) => {
     jumpTo(initPath);
     return (
         <nav
-            class='select-none h-full text-sm flex-grow flex flex-col'
+            class='select-none w-[20rem] h-full text-sm flex-grow flex flex-col bg-gray-100'
             style={{ display: props.visible() ? "block" : "none" }}
         >
             <header class="flex items-center">
-                <div onclick={back} data-icon>
-                    {Left()}
+                <div onclick={back} class='codicon codicon-chevron-left'>
                 </div>
                 <input type="text" class="w-full m-2" value={path()} />
+                <div onclick={() => {
+                    const name = prompt('请输入文件名')
+                    if (name) {
+                        context.fs().writeFile(path() + name, '')
+                        jumpTo(path())
+                    }
+                }} class='codicon codicon-diff-added'>
+                </div>
             </header>
             <section class='flex flex-col overflow-auto overflow-x-hidden h-full'>
                 <For each={fileList()}>
@@ -66,7 +73,7 @@ export const FileTab: Component<{
             ? getIconForFile(props.name)
             : getIconForFolder(props.name));
     return (
-        <span class="single-tab flex items-center w-full cursor-pointer hover:bg-gray-700" onclick={props.onclick as any}>
+        <span class="single-tab flex items-center w-full cursor-pointer hover:bg-gray-200" onclick={props.onclick as any}>
             <img class="w-4 h-4 mx-2" src={src} alt="" />
             {props.name}
         </span>
